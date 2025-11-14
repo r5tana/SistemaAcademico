@@ -1,0 +1,95 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Ejmplo.master.cs" Inherits="SistemaFinanciero.Ejmplo" %>
+<!DOCTYPE html>
+<html lang="en">
+<head id="Head1" runat="server">
+    <title>Sistema Academico</title>
+    <link href="~/global_.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/sweetalert.css" rel="stylesheet" />
+    <script src="Scripts/sweetalert.min.js"></script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <style>
+        html, body, form {
+            height: 100%;
+        }
+
+        #page-wrap {
+            width: 100%;
+            height: auto;
+            min-height: 100%;
+        }
+
+        #footer {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            margin-top: -40px;
+            margin-bottom: 0px !important;
+            padding-bottom: 0px !important;
+            border-radius: 0px !important;
+        }
+    </style>
+    <style>
+        .go-top {
+            position: fixed;
+            bottom: 2em;
+            right: 2em;
+            text-decoration: none;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.9);
+            font-size: 12px;
+            padding: 1em;
+            display: none;
+        }
+
+            .go-top:hover {
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+
+        @media screen and (min-width:768px) {
+            .imageDefault {
+                float: right;
+                position: relative;
+                height: 100% !important;
+                vertical-align: middle;
+            }
+
+            .imageGob {
+                float: left;
+                position: relative;
+                height: 150px;
+                width: auto;
+                vertical-align: middle;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="jumbotron" style="background-image: url('Fotos/Fondo.jpg')">
+            <div class="container">
+                <div align="center" style="margin-top: 50px;">
+                    <h4 style="color: white;"><asp:Label ID="Label1" runat="server" Text="Sistema Académico"></asp:Label></h4>
+                    <h4 style="color: white;"><asp:Label ID="Label2" runat="server" Text="Bienvenido"></asp:Label></h4>
+                    
+                </div>
+            </div>
+            <span class="icon-bar"></span>
+        </div>
+        <form id="Form1" role="form" runat="server">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+            </asp:ContentPlaceHolder>
+        </form>
+    </div>
+
+</body>
+
+</html>
+

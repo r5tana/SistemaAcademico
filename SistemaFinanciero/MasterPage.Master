@@ -1,0 +1,175 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="SistemaFinanciero.MasterPage" %>
+
+<!DOCTYPE html>
+<html lang="es">
+
+
+<head id="Head1" runat="server">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/iconoventana.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Creciendo Juntos</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="Content/sb-admin.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <%--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />--%>
+    <link href="Content/all.css" rel="stylesheet" />
+
+    <!--Nuevos Script-->
+    <link href="Content/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="Content/buttons.dataTables.min.css" rel="stylesheet" />
+
+    <link href="Content/sweetalert.css" rel="stylesheet" />
+    <script src="Scripts/sweetalert.min.js"></script>
+
+
+
+
+</head>
+
+<body id="page-top">
+    <form id="form1" runat="server">
+        <nav class="navbar navbar-expand navbar-dark  static-top ml-md-10" style="background-image: url('Fotos/Fondo.jpg')">
+
+            <a class="navbar-brand mr-1" href="WebFormInicio.aspx">CRECIENDO JUNTOS S.A.</a>
+
+            <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Navbar -->
+            <ul class="navbar-nav ml-auto ml-md-10">
+
+                <li class="">
+                    <asp:Label ID="lblNombreUsuario" class="text-white text-center fas align-middle" runat="server" Text=""></asp:Label>
+                </li>
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-fw"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Salir</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+
+        <div id="wrapper">
+            <ul class="sidebar navbar-nav navbar-dark" style="background-image: url('Fotos/Fondo.jpg')">
+                <li class="nav-item active">
+                    <a class="nav-link" href="WebFormInicio.aspx">
+                        <i class="fas fa-fw fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item active">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Prestamo</span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+                            <a class="dropdown-item" href="WebFormRequest.aspx?rqa=1">Solicitud</a>
+                            <a class="dropdown-item" href="WebFormAuthorizeRequest.aspx">Aprobación</a>
+                            <a class="dropdown-item" href="WebFormDisbursement.aspx">Desembolso</a>
+                            <a class="dropdown-item" href="WebFormLoan.aspx">Réprestamo</a>
+                        </div>
+                    </li>
+                </li>
+
+
+
+
+
+            </ul>
+
+
+            <div id="content-wrapper">
+                <!-- Sidebar -->
+
+                <div class="">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+                <!-- /.container-fluid -->
+
+                <!-- Sticky Footer -->
+                <footer class="sticky-footer" style="color: #007bff;">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <strong><span>Copyright CRECIENDO JUNTOS S.A. <%= DateTime.Now.Year %></span></strong>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Seguro desea salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Selecciona "Salir" si estás listo para cerrar la sesión</div>
+                    <div class="modal-footer" style="background: #D3D3D3;">
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+                        <asp:Button ID="btnAcceder" runat="server" Text="Salir" CssClass="btn btn-primary" OnClick="btnSalir_Click" />
+                        <%--<a class="btn btn-primary" href="WebFormLogin.aspx">Salir</a>--%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<%--        <script>
+            $.sidebarMenu($('.sidebar-menu'))
+        </script>--%>
+
+        <!-- Bootstrap core JavaScript-->
+        <%--<script src="Scripts/jquery.min.js"></script>--%>
+        <%--  <script src="Scripts/jquery.dataTables.min.js"></script>
+        <script src="Scripts/bootstrap.bundle.min.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/sb-admin.min.js"></script>--%>
+
+             <!-- Orden js-->
+        <script src="Scripts/jquery-3.3.1.js"></script>
+        <script src="Scripts/bootstrap.bundle.min.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/jquery.dataTables.min.js"></script>
+        <script src="Scripts/dataTables.buttons.min.js"></script>
+        <script src="Scripts/buttons.print.min.js"></script>
+        <script src="Scripts/buttons.html5.min.js"></script>
+        <script src="Scripts/pdfmake.min.js"></script>
+        <script src="Scripts/vfs_fonts.js"></script>
+        <script src="Scripts/jszip.min.js"></script>
+        <script src="Scripts/sb-admin.min.js"></script>
+       
+
+    </form>
+</body>
+</html>
