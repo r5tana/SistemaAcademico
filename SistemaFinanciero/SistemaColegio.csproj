@@ -296,6 +296,7 @@
     <Content Include="Scripts\buttons.print.min.js" />
     <Content Include="Scripts\dataTables.buttons.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="WebFormUpdateWorker.aspx" />
     <None Include="Properties\PublishProfiles\DesarrolloPublicado.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -472,6 +473,13 @@
     </Compile>
     <Compile Include="WebFormLogin.aspx.designer.cs">
       <DependentUpon>WebFormLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebFormUpdateWorker.aspx.cs">
+      <DependentUpon>WebFormUpdateWorker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormUpdateWorker.aspx.designer.cs">
+      <DependentUpon>WebFormUpdateWorker.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
