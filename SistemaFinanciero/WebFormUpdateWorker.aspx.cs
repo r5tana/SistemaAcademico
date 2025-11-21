@@ -12,7 +12,7 @@ namespace SistemaFinanciero
     public partial class WebFormUpdateWorker : System.Web.UI.Page
     {
         TrabajadorNegocio TrabNego = null;
-        List<Trabajador> ListaTrabajadores = null;
+        List<DetalleTrabajadorDto> ListaTrabajadores = null;
         UsuarioNegocio usuarioNeg = null;
         Utilitario utilitario = null;
 
@@ -29,8 +29,8 @@ namespace SistemaFinanciero
                     //usuarioNeg.Dispose();
 
                     TrabNego = new TrabajadorNegocio();
-                    ListaTrabajadores = new List<Trabajador>();
-                    ListaTrabajadores = TrabNego.ListarTrabajadores();
+                    ListaTrabajadores = new List<DetalleTrabajadorDto>();
+                    ListaTrabajadores = TrabNego.ListaTrabajadores();
                     Session["lista"] = ListaTrabajadores;
                     panellista.Visible = true;
                     LoadTablesolicitud();
@@ -80,7 +80,7 @@ namespace SistemaFinanciero
                 string IdTrabajador = e.CommandArgument.ToString();
 
                 usuarioNeg = new UsuarioNegocio();
-                usuarioNeg.ResetPassword(IdTrabajador);
+                //usuarioNeg.ResetPassword(IdTrabajador);
                 
             }
 
@@ -89,7 +89,7 @@ namespace SistemaFinanciero
                 string IdTrabajador = e.CommandArgument.ToString();
 
                 usuarioNeg = new UsuarioNegocio();
-                usuarioNeg.Activar_InactivarUsuario(IdTrabajador);
+                //usuarioNeg.Activar_InactivarUsuario(IdTrabajador);
 
                 TrabNego = new TrabajadorNegocio();
                 TrabNego.Activar_InactivarTrabajador(IdTrabajador);

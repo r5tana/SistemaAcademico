@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c0e5d0a94f6140dba5359eb9dd00df39" Name="Diagram1">
+        <EntityTypeShape EntityType="ModeloFacturacion.AspNetRoles" Width="1.5" PointX="1.5" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.AspNetUserClaims" Width="1.5" PointX="6" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.AspNetUserLogins" Width="1.5" PointX="6" PointY="36.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.AspNetUsers" Width="1.5" PointX="3.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.Day" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.Event" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.Log" Width="1.5" PointX="16.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.Schedule" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.ScheduleType" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.Sector" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.sysdiagrams" Width="1.5" PointX="16.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturas" Width="1.5" PointX="9" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturascat" Width="1.5" PointX="6.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasdet" Width="1.5" PointX="11.25" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasdetfinal" Width="1.5" PointX="11.25" PointY="32.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasdetsemestral" Width="1.5" PointX="11.25" PointY="36.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasdocente" Width="1.5" PointX="11.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasfuentes" Width="1.5" PointX="6.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasfuentesdet" Width="1.5" PointX="9" PointY="57.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturaspadrehijo" Width="1.5" PointX="14" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasporcentual" Width="1.5" PointX="11.25" PointY="40.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaasignaturasterminal" Width="1.5" PointX="11.25" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmabecas" Width="1.5" PointX="0.75" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmabecasconcepto" Width="1.5" PointX="3" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmabecasdet" Width="1.5" PointX="3" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmabecasinfoen" Width="1.5" PointX="8.25" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmacalificaciones" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmacertificados" Width="1.5" PointX="8.25" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmadocentes" Width="1.5" PointX="9" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaestudiante" Width="1.5" PointX="6" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaestudianteh" Width="1.5" PointX="18.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmafrecuencias" Width="1.5" PointX="16.75" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmahorarios" Width="1.5" PointX="14" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmahorariosdocente" Width="1.5" PointX="11.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmalistas" Width="1.5" PointX="8.25" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmalistastmp" Width="1.5" PointX="18.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmaparciales" Width="1.5" PointX="19.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmapensum" Width="1.5" PointX="11.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmapensumdet" Width="1.5" PointX="17" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmapensumdias" Width="1.5" PointX="18.75" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmapensumperiodo" Width="1.5" PointX="20.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmapromocion" Width="1.5" PointX="8.25" PointY="32" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmareconsanc" Width="1.5" PointX="9" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmareconsancdet" Width="1.5" PointX="11.25" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmasemestre" Width="1.5" PointX="20.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmatutor" Width="1.5" PointX="8.25" PointY="39.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmebodega" Width="1.5" PointX="11.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmecajas" Width="1.5" PointX="12" PointY="47.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmecategorias" Width="1.5" PointX="1.5" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmeconceptos" Width="1.5" PointX="0.75" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmefacturas" Width="1.5" PointX="14.25" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmefacturasdet" Width="1.5" PointX="16.5" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmefamilia" Width="1.5" PointX="3.75" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmeinfobancos" Width="1.5" PointX="20.75" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmeinventario" Width="1.5" PointX="14" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmeinventarioges" Width="1.5" PointX="14" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmeinventariogesdet" Width="1.5" PointX="16.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmetransacciones" Width="1.5" PointX="3.75" PointY="36.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxautorizaciones" Width="1.5" PointX="2.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxautorizacionesdet" Width="1.5" PointX="5" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxcargos" Width="1.5" PointX="20.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxcierre" Width="1.5" PointX="20.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxconfiguracion" Width="1.5" PointX="20.75" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxcontador" Width="1.5" PointX="21.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxemailconf" Width="1.5" PointX="22.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxempresa" Width="1.5" PointX="22.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxlog" Width="1.5" PointX="22.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxlogsesion" Width="1.5" PointX="13.75" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxniveles" Width="1.5" PointX="15.75" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxpais" Width="1.5" PointX="22.75" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxusuarios" Width="1.5" PointX="9.75" PointY="47.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.UserSector" Width="1.5" PointX="6" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmareparaciones" Width="1.5" PointX="8.25" PointY="52.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModeloFacturacion.tmxlogerror" Width="1.5" PointX="17.75" PointY="24.875" IsExpanded="true" />
+        <AssociationConnector Association="ModeloFacturacion.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_UserSector_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_Schedule_Day" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_Schedule_Event" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_Schedule_ScheduleType" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_Schedule_Sector" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_UserSector_Sector" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturas_tmaasignaturascat" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturas_tmaasignaturasfuentes" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturas_tmacalificaciones1" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdet_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdetfinal_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdetsemestral_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdocente_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturaspadrehijo_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasporcentual_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasterminal_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmapensumdet_tmaasignaturas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdet_tmadocentes" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdet_tmaestudiante1" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasdocente_tmadocentes" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturasfuentesdet_tmaasignaturasfuentes" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaasignaturaspadrehijo_tmapensum" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmabecasconcepto_tmabecas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmabecasdet_tmabecas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaestudiante_tmabecas" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmabecasconcepto_tmeconceptos" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmabecasinfoen_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmacertificados_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmahorariosdocente_tmadocentes" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmareconsancdet_tmadocentes" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmaestudiante_tmefamilia" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmalistas_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmapromocion_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmareconsancdet_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmareparaciones_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmatutor_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmefacturas_tmaestudiante" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmahorarios_tmapensum" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmapensumdet_tmapensum" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmareconsancdet_tmareconsanc" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmeinventario_tmebodega" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmecajas_tmxusuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmefacturas_tmecajas1" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmeconceptos_tmecategorias" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmetransacciones_tmecategorias" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmefacturasdet_tmefacturas1" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmeinventariogesdet_tmeinventario" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmeinventariogesdet_tmeinventarioges" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.FK_tmxautorizacionesdet_tmxautorizaciones" ManuallyRouted="false" />
+        <AssociationConnector Association="ModeloFacturacion.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

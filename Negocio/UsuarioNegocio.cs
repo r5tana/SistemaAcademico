@@ -1,173 +1,95 @@
-﻿using System;
+﻿using Datos;
+using Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
-using Entidades;
-using Datos;
+using System.Web.UI.WebControls;
 
 namespace Negocio
 {
     public class UsuarioNegocio : IDisposable
     {
-        string alert = "";
 
-        public void CrearUsuario(Seguridad_Usuario usuario)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.CrearUsuario(usuario);
-        }
-        public Seguridad_Usuario ConsultarUsuario(string user, string pass)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ConsultarUsuario(user, pass);
+        #region "BD SIGA"
 
+        public void CrearUsuario(tmxusuarios usuario)
+        {
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            datosUsuario.CrearUsuario(usuario);
         }
 
-        public Seguridad_Usuario ConsultarUsuarioBloqueado(string user)
+        public tmxusuarios ConsultarUsuarioClave(string login, string pass)
         {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ConsultarUsuarioBloqueado(user);
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            return datosUsuario.ConsultarUsuarioClave(login, pass);
+        }
+        public string NombreUsuario(string login)
+        {
 
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            return datosUsuario.NombreUsuario(login);
         }
 
-
-        public void ConsultarPermiso(string CedulaUsuario)
+        public List<tmxusuarios> ListaUsuarios()
         {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            List<Seguridad_Usuario_Rol> RolesUsuario = new List<Seguridad_Usuario_Rol>();
-            int TienePermiso = 0;
-            string IdUsuario = CedulaUsuario;//HttpContext.Current.Session["IdUsuario"].ToString();
-            
-
-            string Url = HttpContext.Current.Request.Url.AbsoluteUri.Substring(HttpContext.Current.Request.Url.AbsoluteUri.LastIndexOf('/') + 1);
-            int IdAplicacion = UserDatos.ConsultarAplicacion(Url);
-
-            RolesUsuario = UserDatos.UsuarioRoles(IdUsuario);
-
-            foreach (var rol in RolesUsuario)
-            {
-                var Permiso = UserDatos.ConsultarPermiso(IdAplicacion, Convert.ToInt32(rol.IdRol));
-
-                if (Permiso == 1)
-                {
-                    TienePermiso = 1;
-                }
-            }
-
-            if (TienePermiso != 1)
-            {
-                HttpContext.Current.Response.Redirect("WebFormInicio.aspx?Error=rqa9");
-            }
-
-
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            return datosUsuario.ListaUsuarios();
         }
 
-        public List<Seguridad_Rol> ListasRoles()
+        public void Activar_InactivarUsuario(int idUsuario)
         {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ListasRoles();
-        }
-
-        public List<Seguridad_Aplicacion> ListaAplicaciones()
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ListarAplicaciones();
-        }
-
-        public List<int?> UsuarioRoles(string IdUsuario)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ListaRolesUsuario(IdUsuario);
-
-        }
-
-        public List<int> ListaRolesApliaciones(int IdRol)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ListaRolesApliaciones(IdRol);
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            datosUsuario.Activar_InactivarUsuario(idUsuario);
         }
 
 
-        public void AgregarEliminarRol(string IdTrabajador, int IdRol, int TipoProceso)
+        public tmxusuarios ConsultarUsuario(string login)
         {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.AgregarEliminarRol(IdTrabajador, IdRol, TipoProceso);
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            return datosUsuario.ConsultarUsuario(login);
+
+        }
+        public tmxusuarios ConsultarUsuarioId(int idUsuario)
+        {
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            return datosUsuario.ConsultarUsuarioId(idUsuario);
 
         }
 
-        public void CambioContrasena(string Usuario, string NuevaContrasena)
+        public void ActualizarUsuario(tmxusuarios usuario)
         {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.CambioContrasena(Usuario, NuevaContrasena);
+            UsuarioDatos datosUsuario = new UsuarioDatos();
+            datosUsuario.ActualizarUsuario(usuario);
         }
 
-        public bool Administrador(string IdUsuario)
+        public void ResetPassword(int idUsuario, string password)
         {
             UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.Administrador(IdUsuario);
+            UserDatos.ResetPassword(idUsuario, password);
+
         }
 
-        public bool ValidarCargoSupervisor(string IdUsuario)
+        public void ActualizarSesionUsuario(int idUsuario, string sesion)
         {
             UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ValidarCargoSupervisor(IdUsuario);
-        }
-        public bool AnalistaCredito(string IdUsuario)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.AnalistaCredito(IdUsuario);
+            UserDatos.ActualizarSesionUsuario(idUsuario, sesion);
+
         }
 
-        public bool AnalistaCobranza(string IdUsuario)
+        public void CambioClaveUsuario(int idUsuario, string nuevaClave)
         {
             UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.AnalistaCobranza(IdUsuario);
+            UserDatos.CambioClaveUsuario(idUsuario, nuevaClave);
         }
 
-        public void AgregarRegistroSistema(RegistroSistema registro)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.AgregarRegistroSistema(registro);
-        }
 
-        public void EliminarRegistroSistema(string IdUsuario)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.EliminarRegistroSistema(IdUsuario);
-        }
+        #endregion
 
-        public bool ConsultarRegistroSistema(string IdUsuario)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ConsultarRegistroSistema(IdUsuario);
-        }
-
-        public List<Seguridad_Aplicacion> ListarAplicaciones()
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.ListarAplicaciones();
-        }
-
-        public int AgregarPermisosRolAplicacion(Seguridad_PermisoAplicacion aplicacion_rol)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.AgregarPermisosRolAplicacion(aplicacion_rol);
-        }
-
-        public int EliminarPermisosRolAplicacion(int IdApliacion, int IdRol)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            return UserDatos.EliminarPermisosRolAplicacion(IdApliacion, IdRol);
-        }
-
-        public void Activar_InactivarUsuario(string user)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.Activar_InactivarUsuario(user);
-        }
+        #region "Métodos para desencriptar y encriptar contraseña"
 
         /// Encripta una cadena
         public string Encriptar(string pass)
@@ -188,12 +110,9 @@ namespace Negocio
             return result;
         }
 
-        public void ResetPassword(string IdUsuario)
-        {
-            UsuarioDatos UserDatos = new UsuarioDatos();
-            UserDatos.ResetPassword(IdUsuario);
 
-        }
+        #endregion
+
 
         private bool disposed = false;
 
@@ -222,6 +141,5 @@ namespace Negocio
 
             }
         }
-
     }
 }

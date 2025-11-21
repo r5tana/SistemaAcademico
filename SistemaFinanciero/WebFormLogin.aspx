@@ -38,7 +38,6 @@
                         captchaheight="60" captchawidth="300" captchamintimeout="5" captchamaxtimeout="240"
                         fontcolor="#337AB7" noisecolor="#B1B1B1" height="30px" />
 
-                   <%-- <asp:ImageButton ID="ImageButton1" ImageUrl="http://placehold.jp/150x150.png>" runat="server" CausesValidation="false" Height="65px" Width="80px" required="required" />--%>
                 </div>
                 <br />
                 <br />

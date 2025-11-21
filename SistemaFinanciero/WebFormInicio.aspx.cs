@@ -13,44 +13,19 @@ namespace SistemaFinanciero
     {
         UsuarioNegocio UsuarioNeg = null;
         Utilitario utilitario = null;
-        string alert = "";
+        string alert = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            //if (Request.Cookies["ycps"].Value != null)
-            //{
-            //    string bloqueado = Request.QueryString["Error"];
-
-            //    if (bloqueado == "rqa9")
-            //    {
-            //        alert = @"swal('Aviso!', 'NO TIENE PERMISO PARA EJECUTAR LA APLICACIÓN', 'error');";
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
-            //    }
-
-            //    if (!IsPostBack)
-            //    {
-            //        UsuarioNeg = new UsuarioNegocio();
-
-            //        utilitario = new Utilitario();
-            //        string IdUsuario = utilitario.Desencriptar(Request.Cookies["ycps"].Value);
-
-            //        if (UsuarioNeg.AnalistaCobranza(IdUsuario) == true)
-            //        {
-
-            //            panellista.Visible = true;
-            //        }
-            //        else
-            //        {
-            //            panellista.Visible = false;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    Response.Redirect("WebFormLogin.aspx");
-            //}
-
-
+            if (Session["acceso"] != null)
+            {
+                if (int.Parse(Session["acceso"].ToString()) == 2)
+                {
+                    alert = @"swal('Aviso!', 'No tiene permisos para acceder a esta opción', 'error');";
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                }
+            }
         }
 
     }

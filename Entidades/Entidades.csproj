@@ -48,95 +48,247 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arqueo.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="AspNetRoles.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="ArqueoDetalle.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="AspNetUserClaims.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="BloqueoOperativo.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="AspNetUserLogins.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cliente.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="AspNetUsers.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Correlativo.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="Day.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="DiasFestivos.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="Event.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Fiador.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="Log.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Garantia.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Modelo.cs">
+    <Compile Include="ModeloFacturacion.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Modelo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Negocio.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Oficina.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Pago.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanPago.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Prestamo.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistroSistema.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="Schedule.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Seguridad_Aplicacion.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="ScheduleType.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Seguridad_PermisoAplicacion.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="Sector.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Seguridad_Rol.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Seguridad_Usuario.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturas.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Seguridad_Usuario_Rol.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturascat.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Tarifario.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturasdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="TasaBanco.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturasdetfinal.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="TipoNegocio.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturasdetsemestral.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="Trabajador.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturasdocente.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
-    <Compile Include="VisitaNoPago.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
+    <Compile Include="tmaasignaturasfuentes.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaasignaturasfuentesdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaasignaturaspadrehijo.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaasignaturasporcentual.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaasignaturasterminal.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmabecas.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmabecasconcepto.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmabecasdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmabecasinfoen.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmacalificaciones.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmacertificados.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmadocentes.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaestudiante.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaestudianteh.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmafrecuencias.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmahorarios.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmahorariosdocente.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmalistas.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmalistastmp.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmaparciales.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmapensum.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmapensumdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmapensumdias.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmapensumperiodo.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmapromocion.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmareconsanc.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmareconsancdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmareparaciones.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmasemestre.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmatutor.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmebodega.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmecajas.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmecategorias.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmeconceptos.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmefacturas.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmefacturasdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmefamilia.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmeinfobancos.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmeinventario.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmeinventarioges.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmeinventariogesdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmetransacciones.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxautorizaciones.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxautorizacionesdet.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxcargos.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxcierre.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxconfiguracion.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxcontador.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxemailconf.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxempresa.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxlog.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxlogerror.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxlogsesion.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxniveles.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxpais.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tmxusuarios.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserSector.cs">
+      <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Modelo.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Modelo.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModeloFacturacion.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModeloFacturacion.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

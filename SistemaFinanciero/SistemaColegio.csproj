@@ -201,6 +201,7 @@
     <Content Include="Content\buttons.dataTables.min.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sweetalert.css" />
@@ -296,7 +297,12 @@
     <Content Include="Scripts\buttons.print.min.js" />
     <Content Include="Scripts\dataTables.buttons.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="WebFormUpdateWorker.aspx" />
+    <Content Include="Scripts\select2.min.js" />
+    <Content Include="WebFormAddWorker.aspx" />
+    <Content Include="WebFormChangePassword.aspx" />
+    <Content Include="WebFormInputFile.aspx" />
+    <Content Include="WebFormPassword.aspx" />
+    <Content Include="WebFormStudentFee.aspx" />
     <None Include="Properties\PublishProfiles\DesarrolloPublicado.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -460,12 +466,33 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="WebFormAddWorker.aspx.cs">
+      <DependentUpon>WebFormAddWorker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormAddWorker.aspx.designer.cs">
+      <DependentUpon>WebFormAddWorker.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebFormChangePassword.aspx.cs">
+      <DependentUpon>WebFormChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormChangePassword.aspx.designer.cs">
+      <DependentUpon>WebFormChangePassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebFormInicio.aspx.cs">
       <DependentUpon>WebFormInicio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebFormInicio.aspx.designer.cs">
       <DependentUpon>WebFormInicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebFormInputFile.aspx.cs">
+      <DependentUpon>WebFormInputFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormInputFile.aspx.designer.cs">
+      <DependentUpon>WebFormInputFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebFormLogin.aspx.cs">
       <DependentUpon>WebFormLogin.aspx</DependentUpon>
@@ -474,16 +501,24 @@
     <Compile Include="WebFormLogin.aspx.designer.cs">
       <DependentUpon>WebFormLogin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebFormUpdateWorker.aspx.cs">
-      <DependentUpon>WebFormUpdateWorker.aspx</DependentUpon>
+    <Compile Include="WebFormPassword.aspx.cs">
+      <DependentUpon>WebFormPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebFormUpdateWorker.aspx.designer.cs">
-      <DependentUpon>WebFormUpdateWorker.aspx</DependentUpon>
+    <Compile Include="WebFormPassword.aspx.designer.cs">
+      <DependentUpon>WebFormPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebFormStudentFee.aspx.cs">
+      <DependentUpon>WebFormStudentFee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormStudentFee.aspx.designer.cs">
+      <DependentUpon>WebFormStudentFee.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Soporte\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />

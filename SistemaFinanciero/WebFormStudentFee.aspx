@@ -1,0 +1,199 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="WebFormStudentFee.aspx.cs" Inherits="SistemaFinanciero.WebFormStudentFee" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .yellow {
+            background-color: yellow !important;
+        }
+
+        .white {
+            background-color: white !important;
+        }
+
+        .ColumnaOculta {
+            display: none;
+        }
+
+        .mayusculas {
+            text-transform: uppercase;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function pageLoad() {
+            $(document).ready(function () {
+
+                var idioma = {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ning�n dato disponible en esta tabla",
+                    "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando _START_ al _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Filtrar por:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "�ltimo",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    buttons: {
+                        copyTitle: 'Los datos fueron copiados',
+                        copyInfo: {
+                            _: 'Copiados %d filas al portapapeles',
+                            1: 'Copiado 1 fila al portapapeles',
+                        }
+                    }
+                }
+
+                $('#ContentPlaceHolder1_GridAranceles').DataTable({
+                    "scrollX": true,
+                    "language": idioma,
+                    dom: 'Bfrtip',
+                    deferRender: true,
+                    //scrollY: 200,
+                    scrollCollapse: true,
+                    scroller: true,
+                    "order": [[1, "asc"]],
+                    "rowCallback": function (row, data, index) {
+
+                        var estado = data[4],
+                            $node = this.api().row(row).nodes().to$();
+
+                        if (estado == 'CANCELADO') {
+                            $node.addClass('white');
+                        }
+                        else {
+                            $node.addClass('yellow');
+                        }
+                    },
+                    buttons: [
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
+                            autoFilter: true,
+                            className: 'btn btn-success',
+                            exportOptions: {
+                                //columns: [3, 4]
+                                modifier: {
+                                    page: 'all'
+                                }
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            text: 'Imprimir PDF',
+                            className: 'btn btn-danger',
+                            messageTop: 'Aranceles por Estudiante',
+                            title: 'Reporte Trabajadores',
+                            exportOptions: {
+                                //columns: [3, 4,]
+                                modifier: {
+                                    page: 'all'
+                                }
+                            },
+                            customize: function (doc) {
+                                doc.defaultStyle.fontSize = 10;
+                                doc.defaultStyle.alignment = 'center';
+                                doc.styles.tableHeader.fontSize = 10;
+                            }
+                        }
+                    ]
+                });
+            });
+        }
+
+    </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+
+    <div class="panel panel-primary" runat="server" id="panellista">
+        <div class="panel-heading text-left">
+            <h6>Aranceles por Estudiante</h6>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-lg-2 col-md-2 col-xs-6">
+                    Código Estudiante:
+               
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-6">
+                    <asp:TextBox ID="txtEstudiante" CssClass="form-control mayusculas" PlaceHolder="Código Estudiante" runat="server"></asp:TextBox>
+
+                </div>
+
+                <asp:Button ID="bntBuscar" CssClass="btn btn-primary" runat="server" Text="Buscar" OnClick="bntBuscar_Click" />
+
+            </div>
+
+            <br />
+            <asp:Panel runat="server" ID="pnlResultado" Visible="false">
+
+                <div class="row">
+
+                    <div class="col-lg-2 col-md-2 col-xs-6">
+                        Nombres y Apellidos:
+                
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-6">
+                        <asp:TextBox ID="txtNombres" CssClass="form-control mayusculas" PlaceHolder="Nombres y Apellidos" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-xs-6">
+                        Estado:
+                
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-6">
+                        <asp:TextBox ID="txtEstado" CssClass="form-control mayusculas" PlaceHolder="Estado" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <br />
+                <br />
+                <div class="table-responsive">
+                    <asp:GridView CssClass="table table-hover table-bordered table-striped" Style="width: 100%" HeaderStyle-ForeColor="Blue" HeaderStyle-Font-Size="Medium"
+                        ID="GridAranceles" runat="server" AutoGenerateColumns="False" BorderStyle="None"
+                        OnRowDataBound="GridAranceles_RowDataBound">
+                        <AlternatingRowStyle BorderStyle="None" />
+
+                        <Columns>
+                            <asp:BoundField DataField="idtrans" HeaderText="Id transacción" SortExpression="idtrans" />
+                            <asp:BoundField DataField="id_concepto" HeaderText="Concepto" SortExpression="id_concepto" />
+                            <asp:BoundField DataField="descripcion" HeaderText="Descripcion" SortExpression="descripcion" />
+                            <asp:BoundField DataField="total_cordobas" HeaderText="Total" SortExpression="total_cordobas" DataFormatString="{0:N2}" HtmlEncode="false" />
+                            <asp:BoundField DataField="estado" HeaderText="Estado" SortExpression="estado" />
+                            <asp:BoundField DataField="estadopor" HeaderText="Estado Por" SortExpression="estadopor" />
+                            <asp:BoundField DataField="annio_lectivo" HeaderText="Año" SortExpression="annio_lectivo" />
+
+                            <%--<asp:BoundField DataField="Fecha_Carga" HeaderText="Fecha_Carga" SortExpression="Fecha_Carga" />                            
+                            <asp:BoundField DataField="fecha_vencimiento" HeaderText="fecha_vencimiento" SortExpression="fecha_vencimiento" />/>--%>
+                        </Columns>
+                        <EditRowStyle BorderStyle="None" />
+                        <EmptyDataRowStyle BorderStyle="None" />
+                        <HeaderStyle BorderStyle="None" />
+                        <RowStyle BorderStyle="None" />
+                    </asp:GridView>
+                </div>
+            </asp:Panel>
+
+
+
+
+        </div>
+    </div>
+
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
+</asp:Content>

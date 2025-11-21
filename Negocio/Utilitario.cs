@@ -14,7 +14,7 @@ namespace Negocio
     {
         public  string Encriptar(string texto)
         {
-            string clave = "Creciendo";
+            string clave = "RQA";
             byte[] textoBytes = System.Text.Encoding.UTF8.GetBytes(texto);
             byte[] claveBytes = System.Text.Encoding.UTF8.GetBytes(clave);
 
@@ -28,7 +28,7 @@ namespace Negocio
 
         public string Desencriptar(string textoEncriptado)
         {
-            string clave = "Creciendo";
+            string clave = "RQA";
 
             byte[] textoBytes = Convert.FromBase64String(textoEncriptado);
             byte[] claveBytes = System.Text.Encoding.UTF8.GetBytes(clave);

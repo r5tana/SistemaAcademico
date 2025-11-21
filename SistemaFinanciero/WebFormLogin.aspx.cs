@@ -1,26 +1,35 @@
-﻿using System;
+﻿using Entidades;
+using Negocio;
+using SistemaFinanciero.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Entidades;
-using Negocio;
 
 namespace SistemaFinanciero
 {
     public partial class WebFormLogin : System.Web.UI.Page
     {
-        UsuarioNegocio UserNeg = null;
-        Seguridad_Usuario usuario = null;
-        Trabajador trabajador = null;
-        RegistroSistema registrosis = null;
-        Utilitario utilitario = null;   
+        UsuarioNegocio userNegocio = null;
+        tmxusuarios usuario = null;
+        string alert = string.Empty;
 
-        string alert = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                // Hubo un cambio de contraseña temporal
+                if (Session["bandera"] != null) 
+                {
+                    Session["bandera"] = null;
 
+                    alert = @"swal('Aviso!', 'Se realizó cambio de contraseña, favor vuelva a iniciar sesión', 'success');";
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+
+                }
+            }
         }
 
         protected void btnAcceder_Click(object sender, EventArgs e)
@@ -29,98 +38,98 @@ namespace SistemaFinanciero
 
             if (Captcha1.UserValidated)
             {
-                Response.Redirect("WebFormInicio.aspx");
-                //UserNeg = new UsuarioNegocio();
-                //usuario = new Seguridad_Usuario();
-                //trabajador = new Trabajador();
 
-                //bool Logueado = false;
+                userNegocio = new UsuarioNegocio();
+                usuario = new tmxusuarios();
+                string login = txtLogin.Text.Trim().ToUpper();
 
-                //usuario = UserNeg.ConsultarUsuario(txtLogin.Text.Trim().ToUpper(), txtPassword.Text.Trim());
+                var clave = userNegocio.Encriptar(txtPassword.Text.TrimEnd());
 
-                //if (usuario != null)
-                //{
+                usuario = userNegocio.ConsultarUsuarioClave(login, clave);
 
-                //    Logueado = UserNeg.ConsultarRegistroSistema(txtLogin.Text.Trim().ToUpper());
+                if (usuario != null)
+                {
+                    if (usuario.cargo.TrimEnd() != "ADMINISTRADOR" & usuario.cargo.TrimEnd() != "CAJERO" & usuario.cargo.TrimEnd() != "CONTADORA")
+                    {
+                        alert = @"swal('Aviso!', 'El usuario no tiene permiso para acceder el sistema', 'error');";
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                    }
+                    else
+                    {
+                        if (usuario.sesion.TrimEnd() == "INACTIVO" || usuario.sesion.TrimEnd() == "INACTIVA")
+                        {
+                            if (txtPassword.Text.TrimEnd() == "2025")
+                            {
+                                Session["IdTemporal"] = usuario.id_usuario;
+                                Response.Redirect("WebFormPassword.aspx");
+                            }
+                            else
+                            {
 
-                //    if (Logueado == false)
-                //    {
-                //                    HttpCookie cookieUser = new HttpCookie("ycps");
-                //                    HttpCookie cookieName = new HttpCookie("raqa");
+                                Session["Login"] = login;
+                                Session["IdUsuario"] = usuario.id_usuario;
+                                Session["RolUsuario"] = usuario.cargo.TrimEnd();
 
-                //                    utilitario = new Utilitario();
-                //                    cookieUser.Value = utilitario.Encriptar(trabajador.CedulaTrabajador);
-                //                    cookieName.Value = utilitario.Encriptar(trabajador.NombreTrabajador);
+                                //Registrar Session
+                                userNegocio.ActualizarSesionUsuario(usuario.id_usuario, "ACTIVA");
 
-                //                    cookieUser.Expires = DateTime.Now.AddDays(1);
-                //                    cookieName.Expires = DateTime.Now.AddDays(1);
+                                Response.Redirect("WebFormInicio.aspx");
+                            }
 
-                //                    Response.Cookies.Add(cookieUser);
-                //                    Response.Cookies.Add(cookieName);
+                        }
+                        else
+                        {
+                            alert = @"swal('Aviso!', 'El usuario tiene una sesión activa', 'error');";
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                        }
+                    }
 
-
-                //                    registrosis = new RegistroSistema();
-                //                    registrosis.IdUsuarioLogin = txtLogin.Text.Trim().ToUpper();
-                //                    registrosis.Ingreso = DateTime.Now;
-                //                    UserNeg.AgregarRegistroSistema(registrosis);
-
-
-                //                        UserNeg.Dispose();
-                //                        Response.Redirect("WebFormInicio.aspx");
-
-                //    }
-                //    else
-                //    {
-
-                //        alert = @"swal('Aviso!', 'Usuario ya accedió al sistema', 'error');";
-                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
-                //    }
-
-            //}
-            //    else
-            //    {
-                    
-            //        txtCaptcha.Text = "";
-            //        alert = @"swal('Aviso!', 'Usuario o Contraseña Incorrecta', 'error');";
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
-            //    }
-
-              
+                }
+                else
+                {
+                    txtCaptcha.Text = "";
+                    alert = @"swal('Aviso!', 'Usuario o Contraseña Incorrecta', 'error');";
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                }
             }
             else
             {
-              
                 txtCaptcha.Text = "";
                 alert = @"swal('Aviso!', 'Favor escribe el codigo de la imagen', 'error');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
+
         }
 
         protected void btnDesbloquear_Click(object sender, EventArgs e)
         {
-            UserNeg = new UsuarioNegocio();
-            usuario = new Seguridad_Usuario();
-
-            usuario = UserNeg.ConsultarUsuarioBloqueado(txtLogin.Text.Trim().ToUpper());
-
+            userNegocio = new UsuarioNegocio();
+            usuario = userNegocio.ConsultarUsuario(txtLogin.Text.TrimEnd().ToUpper());
             if (usuario != null)
             {
-                //string ip2 = Request.UserHostAddress;
-                //Negocio.LogSistema log = new LogSistema();
-                //log.GuardarLogSistema("Login " + "Desbloquea el usuario " + txtLogin.Text.Trim() + " Con IP " + ip2, txtLogin.Text.Trim());
+                if (usuario.cargo.TrimEnd() != "ADMINISTRADOR" & usuario.cargo.TrimEnd() != "CAJERO" & usuario.cargo.TrimEnd() != "CONTADORA")
+                {
+                    alert = @"swal('Aviso!', 'El usuario que intenta desbloquear no tiene permisos para el acceder al sistema', 'error');";
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                }
+                else
+                {
+                    if (usuario.estado.TrimEnd() == "ACTIVO" | usuario.estado.TrimEnd() == "ACTIVA")
+                    {
+                        userNegocio.ActualizarSesionUsuario(usuario.id_usuario, "INACTIVA");
 
-                UserNeg.EliminarRegistroSistema(usuario.Usuario);
-                UserNeg.Dispose();
-                alert = @"swal('Aviso!', 'Se ha desbloqueado el usuario correctamente', 'success');";
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                        alert = @"swal('Aviso!', 'Se ha desbloqueado el usuario correctamente', 'success');";
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                    }
+                    else
+                    {
+                        alert = @"swal('Aviso!', 'Usuario no existe', 'error');";
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                    }
+                }
             }
             else
             {
-                //string ip2 = Request.UserHostAddress;
-                //Negocio.LogSistema log = new LogSistema();
-                //log.GuardarLogSistema("Login " + "Intenta Desbloquear usuario que no existe " + txtLogin.Text.Trim() + " Con IP " + ip2, txtLogin.Text.Trim());
-
-                UserNeg.Dispose();
                 alert = @"swal('Aviso!', 'Usuario no existe', 'error');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
