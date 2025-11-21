@@ -63,7 +63,7 @@
                     //scrollY: 200,
                     scrollCollapse: true,
                     scroller: true,
-                    "order": [[1, "asc"]],
+                    "order": [[0, "desc"]],
                     "rowCallback": function (row, data, index) {
 
                         var estado = data[4],
@@ -109,6 +109,51 @@
                         }
                     ]
                 });
+
+
+                $('#ContentPlaceHolder1_GridEstudiantes').DataTable({
+                    "scrollX": true,
+                    "language": idioma,
+                    dom: 'Bfrtip',
+                    deferRender: true,
+                    //scrollY: 200,
+                    scrollCollapse: true,
+                    scroller: true,
+                    buttons: [
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
+                            autoFilter: true,
+                            className: 'btn btn-success',
+                            exportOptions: {
+                                //columns: [3, 4]
+                                modifier: {
+                                    page: 'all'
+                                }
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            text: 'Imprimir PDF',
+                            className: 'btn btn-danger',
+                            messageTop: 'Aranceles por Estudiante',
+                            title: 'Reporte Trabajadores',
+                            exportOptions: {
+                                //columns: [3, 4,]
+                                modifier: {
+                                    page: 'all'
+                                }
+                            },
+                            customize: function (doc) {
+                                doc.defaultStyle.fontSize = 10;
+                                doc.defaultStyle.alignment = 'center';
+                                doc.styles.tableHeader.fontSize = 10;
+                            }
+                        }
+                    ]
+                });
+
+
             });
         }
 
@@ -123,23 +168,57 @@
             <h6>Aranceles por Estudiante</h6>
         </div>
         <div class="panel-body">
-            <div class="row">
 
-                <div class="col-lg-2 col-md-2 col-xs-6">
-                    Código Estudiante:
-               
-                </div>
-                <div class="col-lg-4 col-md-4 col-xs-6">
-                    <asp:TextBox ID="txtEstudiante" CssClass="form-control mayusculas" PlaceHolder="Código Estudiante" runat="server"></asp:TextBox>
+            <div class="table-responsive">
 
-                </div>
+                <asp:GridView CssClass="table table-hover table-bordered table-striped" Style="width: 100%" HeaderStyle-ForeColor="Blue" HeaderStyle-Font-Size="Medium"
+                    ID="GridEstudiantes" runat="server" AutoGenerateColumns="False" BorderStyle="None"
+                    OnRowCommand="GridEstudiantes_RowCommand">
+                    <AlternatingRowStyle BorderStyle="None" />
 
-                <asp:Button ID="bntBuscar" CssClass="btn btn-primary" runat="server" Text="Buscar" OnClick="bntBuscar_Click" />
+                    <Columns>
+                        <asp:TemplateField HeaderText="Seleccionar" ItemStyle-CssClass="text-center">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="btnBuscar" CommandName="BuscarArancel"
+                                    runat="server" CommandArgument='<%# Eval("id_estudiante") %>'
+                                    CssClass="circle btn btn-primary grow">
+                             <i  class="glyphicon glyphicon-search" aria-hidden="true"></i>
+                                </asp:LinkButton>
+                            </ItemTemplate>
 
+                            <HeaderStyle Width="5px" />
+
+                            <ItemStyle CssClass="text-center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:BoundField DataField="id_estudiante" HeaderText="Código Estudiante" SortExpression="id_estudiante" />
+                        <asp:BoundField DataField="nombres" HeaderText="Nombres" SortExpression="nombres" />
+                        <asp:BoundField DataField="apellidos" HeaderText="Apellidos" SortExpression="apellidos" />
+                        <asp:BoundField DataField="estado" HeaderText="Estado" SortExpression="estado" />
+                        <asp:BoundField DataField="seccion" HeaderText="Sección" SortExpression="seccion" />
+                    </Columns>
+                    <EditRowStyle BorderStyle="None" />
+                    <EmptyDataRowStyle BorderStyle="None" />
+                    <HeaderStyle BorderStyle="None" />
+                    <RowStyle BorderStyle="None" />
+                </asp:GridView>
             </div>
 
-            <br />
+
             <asp:Panel runat="server" ID="pnlResultado" Visible="false">
+                <div class="row">
+
+                    <div class="col-lg-2 col-md-2 col-xs-6">
+                        Código Estudiante:
+               
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-6">
+                        <asp:TextBox ID="txtEstudiante" CssClass="form-control mayusculas" PlaceHolder="Código Estudiante" runat="server" ReadOnly="true"></asp:TextBox>
+
+                    </div>
+
+                </div>
+
+                <br />
 
                 <div class="row">
 
@@ -186,6 +265,11 @@
                         <RowStyle BorderStyle="None" />
                     </asp:GridView>
                 </div>
+                <br />
+
+                <asp:Button ID="bntRetornar" CssClass="btn btn-danger" runat="server" Text="Regresar" OnClick="bntRetornar_Click" />
+
+
             </asp:Panel>
 
 

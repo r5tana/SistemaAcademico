@@ -17,31 +17,10 @@ namespace SistemaFinanciero
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-        }
-
-
-        public void CargarTransacciones()
-        {
-            List<tmetransacciones> lista = new List<tmetransacciones>();
-            lista = transaccionNegocio.ListaTransaccionesPorEstudiante(txtEstudiante.Text.TrimEnd().ToUpper());
-            Session["listaTransacciones"] = lista;
-
-            if (lista.Count > 0)
+            if (!IsPostBack)
             {
-                pnlResultado.Visible = true;
-                this.GridAranceles.DataSource = lista;
-                GridAranceles.DataBind();
-                GridAranceles.UseAccessibleHeader = true;
-                GridAranceles.HeaderRow.TableSection = TableRowSection.TableHeader;
+                CargarEstudiantes();
             }
-            else
-            {
-                LimpiarCampos();
-                alert = @"swal('Aviso!', 'Código del estudiante no registro de transacciones', 'error');";
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
-            }
-
         }
 
         public void LimpiarCampos()
@@ -51,6 +30,8 @@ namespace SistemaFinanciero
             txtEstado.Text = string.Empty;
             GridAranceles.DataSource = null;
             GridAranceles.DataBind();
+            GridEstudiantes.DataSource = null;
+            GridEstudiantes.DataBind();
         }
 
         protected void GridAranceles_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -71,29 +52,77 @@ namespace SistemaFinanciero
             }
         }
 
-        protected void bntBuscar_Click(object sender, EventArgs e)
+        public void CargarEstudiantes()
         {
-            if (!string.IsNullOrEmpty(txtEstudiante.Text.TrimEnd()))
-            {
-                var detalleEstudiante = estudiante.ConsultarEstudiante(txtEstudiante.Text.TrimEnd().ToUpper());
-                if (detalleEstudiante != null)
-                {
-                    txtNombres.Text = detalleEstudiante.nombres.TrimEnd().ToUpper() + " " + detalleEstudiante.apellidos.TrimEnd().ToUpper();
-                    txtEstado.Text = detalleEstudiante.estado.TrimEnd().ToUpper();
+            LimpiarCampos();
+            List<tmaestudiante> lista = new List<tmaestudiante>();
+            lista = estudiante.ListaEstudiante();
+            Session["listaEstudiantes"] = lista;
 
-                    CargarTransacciones();
-                }
-                else
-                {
-                    alert = @"swal('Aviso!', 'Código del estudiante no se encuentra registrado', 'error');";
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
-                }
+            if (lista.Count > 0)
+            {
+                pnlResultado.Visible = false;
+                this.GridEstudiantes.DataSource = lista;
+                GridEstudiantes.DataBind();
+                GridEstudiantes.UseAccessibleHeader = true;
+                GridEstudiantes.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
             else
             {
-                alert = @"swal('Aviso!', 'Debe digitar el código el estudiante', 'error');";
+                
+                alert = @"swal('Aviso!', 'No hay registros de estudiante', 'error');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
+
+        }
+
+
+        protected void GridEstudiantes_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+
+            if (e.CommandName == "BuscarArancel")
+            {
+                string codigoEstudiante = e.CommandArgument.ToString();
+
+                List<tmetransacciones> lista = new List<tmetransacciones>();
+                lista = transaccionNegocio.ListaTransaccionesPorEstudiante(codigoEstudiante.TrimEnd().ToUpper());
+                Session["listaTransacciones"] = lista;
+
+                if (lista.Count > 0)
+                {
+                    var detalleEstudiante = estudiante.ConsultarEstudiante(codigoEstudiante.TrimEnd().ToUpper());
+
+                    txtEstudiante.Text = codigoEstudiante;
+                    txtNombres.Text = detalleEstudiante.nombres.TrimEnd().ToUpper() + " " + detalleEstudiante.apellidos.TrimEnd().ToUpper();
+                    txtEstado.Text = detalleEstudiante.estado.TrimEnd().ToUpper();
+
+
+                    GridEstudiantes.Visible = false;
+                    pnlResultado.Visible = true;
+                    this.GridAranceles.DataSource = lista;
+                    GridAranceles.DataBind();
+                    GridAranceles.UseAccessibleHeader = true;
+                    GridAranceles.HeaderRow.TableSection = TableRowSection.TableHeader;
+                }
+                else
+                {
+                    pnlResultado.Visible = false;
+                    GridEstudiantes.Visible = true;
+                    GridAranceles.UseAccessibleHeader = true;
+                    GridAranceles.HeaderRow.TableSection = TableRowSection.TableHeader;
+
+                    LimpiarCampos();
+                    alert = @"swal('Aviso!', 'Código del estudiante no registro de transacciones', 'error');";
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                }
+
+            }
+        }
+
+        protected void bntRetornar_Click(object sender, EventArgs e)
+        {
+            GridEstudiantes.Visible = true;
+            CargarEstudiantes();
         }
     }
 }

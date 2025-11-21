@@ -33,22 +33,13 @@ namespace SistemaFinanciero
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl panellista;
 
         /// <summary>
-        /// Control txtEstudiante.
+        /// Control GridEstudiantes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEstudiante;
-
-        /// <summary>
-        /// Control bntBuscar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button bntBuscar;
+        protected global::System.Web.UI.WebControls.GridView GridEstudiantes;
 
         /// <summary>
         /// Control pnlResultado.
@@ -58,6 +49,15 @@ namespace SistemaFinanciero
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlResultado;
+
+        /// <summary>
+        /// Control txtEstudiante.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEstudiante;
 
         /// <summary>
         /// Control txtNombres.
@@ -85,5 +85,14 @@ namespace SistemaFinanciero
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridAranceles;
+
+        /// <summary>
+        /// Control bntRetornar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button bntRetornar;
     }
 }
