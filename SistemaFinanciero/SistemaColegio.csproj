@@ -268,6 +268,7 @@
     <Content Include="Fotos\cargando2.gif" />
     <Content Include="Fotos\error.png" />
     <Content Include="Fotos\Fondo.jpg" />
+    <Content Include="Fotos\Fondo2.png" />
     <Content Include="Fotos\index.htm" />
     <Content Include="Fotos\minus.png" />
     <Content Include="Fotos\plus.png" />
