@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Microsoft.Ajax.Utilities;
 using Negocio;
 using SistemaFinanciero.Account;
 using System;
@@ -18,10 +19,12 @@ namespace SistemaFinanciero
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
             if (!IsPostBack)
             {
                 // Hubo un cambio de contraseña temporal
-                if (Session["bandera"] != null) 
+                if (Session["bandera"] != null)
                 {
                     Session["bandera"] = null;
 
@@ -34,6 +37,12 @@ namespace SistemaFinanciero
 
         protected void btnAcceder_Click(object sender, EventArgs e)
         {
+            //Session["Login"] = "rquintana";
+            //Session["IdUsuario"] = "001";
+            //Session["RolUsuario"] = "Cajero";
+
+            //Response.Redirect("WebFormInicio.aspx");
+
             Captcha1.ValidateCaptcha(txtCaptcha.Text.Trim());
 
             if (Captcha1.UserValidated)

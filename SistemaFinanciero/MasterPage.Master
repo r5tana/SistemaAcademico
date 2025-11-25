@@ -108,6 +108,13 @@
                     </a>
                 </li>
 
+                  <li class="nav-item active">
+                    <a class="nav-link" href="WebFormPrinterCountCash.aspx">
+                        <i class="fas fa-fw fa-key"></i>
+                        <span>Ejemplo de impresion</span>
+                    </a>
+                </li>
+
                 <%-- <li class="nav-item active">
                     <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

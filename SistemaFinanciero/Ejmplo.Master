@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head id="Head1" runat="server">
-    <title>Sistema Facturación</title>
+    <title>La Salle</title>
     <link href="~/global_.ico" rel="shortcut icon" type="image/x-icon" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -71,11 +71,11 @@
 <body>
 
     <div class="container">
-        <div class="jumbotron" style="background-image: url('Fotos/Fondo.jpg')">
+        <div class="jumbotron" style="background-image: url('Fotos/Fondo2.png'); background-size: 100% 100%; background-repeat: no-repeat;">
             <div class="container">
                 <div align="center" style="margin-top: 50px;">
-                    <h4 style="color: white;"><asp:Label ID="Label1" runat="server" Text="Sistema Facturación"></asp:Label></h4>
-                    <h4 style="color: white;"><asp:Label ID="Label2" runat="server" Text="Instituto Pedagógico La Salle"></asp:Label></h4>
+                   <%-- <h4 style="color: white;"><asp:Label ID="Label1" runat="server" Text="Instituto Pedagógico"></asp:Label></h4>
+                    <h4 style="color: white;"><asp:Label ID="Label2" runat="server" Text="LA SALLE"></asp:Label></h4>--%>
                     
                 </div>
             </div>

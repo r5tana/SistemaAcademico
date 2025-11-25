@@ -11,7 +11,7 @@
 
     <div align="center">
         <div class="panel panel-primary" style="height: auto; text-align: center;">
-            <div class="panel-heading">
+            <div class="panel-heading" style="background-color:#033f7b">
                 Inicio de Sesión 
             </div>
             <div class="panel-body ">
@@ -36,7 +36,7 @@
 
                     <cc1:captchacontrol id="Captcha1" runat="server" captchabackgroundnoise="Low" captchalength="4"
                         captchaheight="60" captchawidth="300" captchamintimeout="5" captchamaxtimeout="240"
-                        fontcolor="#337AB7" noisecolor="#B1B1B1" height="30px" />
+                        fontcolor="#033f7b" noisecolor="#B1B1B1" height="30px" />
 
                 </div>
                 <br />
@@ -46,14 +46,14 @@
                     <div class="col-md-12">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
-                            <asp:TextBox ID="txtCaptcha" runat="server" CssClass="form-control" placeholder="Escriba el texto en la imagen:"></asp:TextBox>
+                            <asp:TextBox ID="txtCaptcha" runat="server" CssClass="form-control"  placeholder="Escriba el texto en la imagen:"></asp:TextBox>
                         </div>
                     </div>
                 </div>
 
                 <br />
                  <div class="col-lg-12">
-                        <asp:Button ID="btnAcceder" runat="server" Text="Acceder" CssClass="btn btn-primary" OnClick="btnAcceder_Click" />
+                        <asp:Button ID="btnAcceder" runat="server" Text="Acceder" CssClass="btn btn-primary" style="background-color:#033f7b" OnClick="btnAcceder_Click" />
                    
                     <asp:Button ID="btnDesbloquear" runat="server" Text="Desbloquear" CssClass="btn btn-danger" OnClick="btnDesbloquear_Click" />
                 </div>
