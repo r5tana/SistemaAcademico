@@ -30,5 +30,19 @@ namespace Negocio
 
         }
 
+        public List<DetalleTransaccionEstudianteDto> ListaTransaccionesPendientesEstudiante(string codigoEstudiante)
+        {
+
+            TransaccionDatos transaccionDatos = new TransaccionDatos();
+            return transaccionDatos.ListaTransaccionesPendientesEstudiante(codigoEstudiante);
+        }
+
+        public void ActualizarTrasaccionPorId(int idTransaccion)
+        {
+            TransaccionDatos transaccionDatos = new TransaccionDatos();
+            transaccionDatos.ActualizarTrasaccionPorId(idTransaccion);
+
+        }
+
     }
 }

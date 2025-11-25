@@ -21,5 +21,12 @@ namespace Negocio
             EstudianteDatos datosEstudiante = new EstudianteDatos();
             return datosEstudiante.ConsultarEstudiante(codigoEstudiante);
         }
+
+        public List<DetalleEstudianteDto> ListaEstudianteConTransacciones()
+        {
+            EstudianteDatos datosEstudiante = new EstudianteDatos();
+            return datosEstudiante.ListaEstudianteConTransacciones();
+        }
+
     }
 }

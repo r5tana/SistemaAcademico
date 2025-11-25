@@ -43,8 +43,8 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 transacciones = new tmetransacciones();
 
-                transacciones = (from x in modeloFacturacion.tmetransacciones where x.id_estudiante.TrimEnd() == idEstudiante & x.id_concepto.TrimEnd() == idConcepto
-                                    & x.id_categoria.TrimEnd() == idCategoria & x.annio_lectivo == anio select x).FirstOrDefault();
+                transacciones = (from x in modeloFacturacion.tmetransacciones where x.id_estudiante == idEstudiante & x.id_concepto.TrimEnd() == idConcepto
+                                    & x.id_categoria == idCategoria & x.annio_lectivo == anio select x).FirstOrDefault();
 
                 if (transacciones != null)
                 {
@@ -57,7 +57,7 @@ namespace Datos
             catch (Exception error)
             {
 
-                throw new Exception("Error al activar o inactivar el usuario " + error);
+                throw new Exception("Error al actualizar transacción por estudiante " + error);
             }
         }
 
@@ -69,18 +69,77 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 List<tmetransacciones> listaTransacciones = new List<tmetransacciones>();
 
-                return listaTransacciones = (from x in modeloFacturacion.tmetransacciones where x.id_estudiante.TrimEnd() == codigoEstudiante select x).ToList();
+                modeloFacturacion.Database.CommandTimeout = 300;
+                return listaTransacciones = (from x in modeloFacturacion.tmetransacciones where x.id_estudiante == codigoEstudiante select x).ToList();
 
             }
             catch (Exception error)
             {
 
-                throw new Exception("Ocurrio un error al momento de cargar los usuarios " + error);
+                throw new Exception("Ocurrio un error al momento de cargar transacción por estudiante " + error);
             }
             finally
             {
                 if (modeloFacturacion != null)
                     modeloFacturacion.Dispose();
+            }
+        }
+
+        public List<DetalleTransaccionEstudianteDto> ListaTransaccionesPendientesEstudiante(string codigoEstudiante)
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                List<DetalleTransaccionEstudianteDto> listaTransacciones = new List<DetalleTransaccionEstudianteDto>();
+                modeloFacturacion.Database.CommandTimeout = 300;
+                
+                return listaTransacciones = (from x in modeloFacturacion.tmetransacciones 
+                                             where x.id_estudiante == codigoEstudiante 
+                                             & x.estado == "0" 
+                                             select new DetalleTransaccionEstudianteDto
+                                             {
+                                                 IdTransaccion = x.idtrans,
+                                                 CodigoEstudiante = x.id_estudiante,
+                                                 DescripcionTransaccion = x.descripcion,
+                                                 Estado = x.estado,
+                                                 Monto = x.total_cordobas
+
+                                             }).ToList();
+
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception("Ocurrio un error al momento de cargar las transacciones pendientes " + error);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public void ActualizarTrasaccionPorId(int idTransaccion)
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                transacciones = new tmetransacciones();
+
+                transacciones = (from x in modeloFacturacion.tmetransacciones
+                                 where x.idtrans == idTransaccion
+                                 select x).FirstOrDefault();
+
+                if (transacciones != null)
+                {
+                    transacciones.estado = "1";
+                    modeloFacturacion.SaveChanges();
+                }
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception("Error al actualizar transacción " + error);
             }
         }
 

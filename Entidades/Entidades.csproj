@@ -63,6 +63,8 @@
     <Compile Include="Day.cs">
       <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>
+    <Compile Include="DetalleEstudianteDto.cs" />
+    <Compile Include="DetalleTransaccionEstudianteDto.cs" />
     <Compile Include="Event.cs">
       <DependentUpon>ModeloFacturacion.tt</DependentUpon>
     </Compile>

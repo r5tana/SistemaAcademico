@@ -13,6 +13,7 @@ namespace SistemaFinanciero
     public partial class MasterPage : System.Web.UI.MasterPage
     {
         private UsuarioNegocio userNegocio = new UsuarioNegocio();
+        private ConsultaNegocio consultaNegocio = new ConsultaNegocio();
         string alert = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -20,6 +21,7 @@ namespace SistemaFinanciero
 
             if (Session["Login"] != null)
             {
+                var idUsuario = int.Parse(Session["IdUsuario"].ToString());
                 var cargo = Session["RolUsuario"].ToString();
                 lblNombreUsuario.Text = "Bienvenido/a " + userNegocio.NombreUsuario(Session["Login"].ToString());
 
@@ -31,6 +33,11 @@ namespace SistemaFinanciero
                     Session["acceso"] = 2; // No tiene permisos de acceder al menu
                     Response.Redirect("WebFormInicio.aspx");
 
+                }
+                else if (Url == "WebFormPay.aspx" && cargo.TrimEnd() != "CAJERO")
+                {
+                    Session["acceso"] = 2; // No tiene permisos de acceder al menu
+                    Response.Redirect("WebFormInicio.aspx");
                 }
                 else
                     Session["acceso"] = 1;

@@ -77,6 +77,7 @@
                     </a>
                 </li>
 
+
                 <li class="nav-item active">
                     <a class="nav-link" href="WebFormStudentFee.aspx">
                         <i class="fas fa-fw fa-list"></i>
@@ -84,6 +85,15 @@
                     </a>
                 </li>
 
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="WebFormPay.aspx">
+                        <i class="fas fa-fw fa-donate"></i>
+                        <span>Gestionar Pagos</span>
+                    </a>
+                </li>
+
+                
                 <li class="nav-item active">
                     <a class="nav-link" href="WebFormInputFile.aspx">
                         <i class="fas fa-fw fa-file"></i>
@@ -102,13 +112,10 @@
                     <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-hand-holding-usd"></i>
-                            <span>Prestamo</span>
+                            <span>Menu</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                            <a class="dropdown-item" href="WebFormUpdateWorker.aspx">Trabajador</a>
-                            <a class="dropdown-item" href="WebFormAuthorizeRequest.aspx">Aprobación</a>
-                            <a class="dropdown-item" href="WebFormDisbursement.aspx">Desembolso</a>
-                            <a class="dropdown-item" href="WebFormLoan.aspx">Réprestamo</a>
+                            <a class="dropdown-item" href="#">Submenu</a>
                         </div>
                     </li>
                 </li>--%>
@@ -183,10 +190,8 @@
 
         <!-- Orden js-->
         <script src="Scripts/jquery-3.3.1.js"></script>
-        <script src="Scripts/bootstrap.bundle.min.js"></script>
-        <%-- ADD GLG --%>
-        <script src="Scripts/select2.min.js"></script>
-        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/bootstrap.bundle.min.js"></script>      
+        <%--<script src="Scripts/bootstrap.min.js"></script> prueba glg--%>
         <script src="Scripts/jquery.dataTables.min.js"></script>
         <script src="Scripts/dataTables.buttons.min.js"></script>
         <script src="Scripts/buttons.print.min.js"></script>

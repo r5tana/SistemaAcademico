@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Entidades;
 
 namespace Datos
 {
@@ -18,8 +19,45 @@ namespace Datos
             {
                 modeloFacturacion = new SistemaFacturacionEntities();
                 List<tmaestudiante> listaEstudiante = new List<tmaestudiante>();
+                modeloFacturacion.Database.CommandTimeout = 300;
+                return listaEstudiante = (from x in modeloFacturacion.tmaestudiante where x.estado != "INACTIVO"  
+                                          select x).ToList();
 
-                return listaEstudiante = (from x in modeloFacturacion.tmaestudiante select x).ToList();
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception("Ocurrio un error al momento de cargar estudiantes " + error);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public List<DetalleEstudianteDto> ListaEstudianteConTransacciones()
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                List<DetalleEstudianteDto> listaEstudiante = new List<DetalleEstudianteDto>();
+
+                modeloFacturacion.Database.CommandTimeout = 300;
+
+                return listaEstudiante = (from x in modeloFacturacion.tmaestudiante
+                                          //join z in modeloFacturacion.tmetransacciones on x.id_estudiante equals z.id_estudiante
+                                          where  x.estado != "INACTIVO"
+                                          select new DetalleEstudianteDto
+                                          {
+                                              CodigoEstudiante = x.id_estudiante,
+                                              Nombres = x.nombres,
+                                              Apellidos = x.apellidos,
+                                              Estado = x.estado,
+                                              Seccion = x.seccion,
+                                              Anio_Lectivo = x.annio_lectivo
+
+                                          }).Distinct().ToList();
 
             }
             catch (Exception error)

@@ -137,12 +137,12 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 usuario = new tmxusuarios();
 
-                return usuario = (from x in modeloFacturacion.tmxusuarios where x.usuario.TrimEnd() == login select x).FirstOrDefault();
+                return usuario = (from x in modeloFacturacion.tmxusuarios where x.usuario == login select x).FirstOrDefault();
             }
             catch (Exception err)
             {
 
-                throw new Exception("Error al consultar trabajador " + login + " " + err);
+                throw new Exception("Error al consultar usuario " + login + " " + err);
             }
             finally
             {
@@ -193,7 +193,7 @@ namespace Datos
             catch (Exception error)
             {
 
-                throw new Exception("Error al activar o inactivar el usuario " + error);
+                throw new Exception("Error al actualizar datos de usuario " + error);
             }
         }
         
