@@ -21,15 +21,6 @@
             debugger;
             $('#ModalStudent').modal('show');
 
-            //setTimeout(function () {
-            //    $('#ContentPlaceHolder1_GridEstudiantes').DataTable({
-            //        "scrollX": true,
-            //        "language": idioma,
-            //        scrollY: "50vh",
-            //        scrollCollapse: true
-            //    }).columns.adjust();
-            //}, 300);
-
             $('#ModalStudent').on('shown.bs.modal', function () {
                 $('#ContentPlaceHolder1_GridEstudiantes').DataTable().columns.adjust();
             });
@@ -58,18 +49,10 @@
             display: none;
         }
 
-        /* .modal-dialog {
-            width: 90%;
-            max-width: none;
-        }
-*/
-        /*.modal-backdrop {
-            display: none;
+        .mayusculas {
+            text-transform: uppercase;
         }
 
-        .modal-open {
-            overflow-y: scroll;
-        }*/
     </style>
 
     <script type="text/javascript">
@@ -169,7 +152,7 @@
                                 A nombre:
                             </div>
                             <div class="col-lg-5 col-md-5 col-xs-5">
-                                <asp:TextBox ID="txtNombreFactura" CssClass="form-control mayusculas" PlaceHolder="Nombres y Apellidos" runat="server" Enabled="false"></asp:TextBox>
+                                <asp:TextBox ID="txtNombreFactura" CssClass="form-control mayusculas" PlaceHolder="Nombres y Apellidos" runat="server"></asp:TextBox>
                             </div>
 
                             <div class="col-lg-1 col-md-1 col-xs-1">
@@ -196,7 +179,6 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 <asp:DropDownList ID="ddlFormaPago" runat="server" CssClass="form-control">
-                                    <%--<asp:ListItem Value="N/A">SELECCIONE...</asp:ListItem>--%>
                                     <asp:ListItem Value="EFECTIVO">EFECTIVO</asp:ListItem>
                                     <asp:ListItem Value="CHEQUE">CHEQUE</asp:ListItem>
                                     <asp:ListItem Value="TRANSFERENCIA">TARJETA</asp:ListItem>
@@ -208,10 +190,8 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-control" Enabled="false">
-                                    <%--<asp:ListItem Value="N/A">SELECCIONE...</asp:ListItem>--%>
                                     <asp:ListItem Value="CANCELADO">CANCELADO</asp:ListItem>
                                     <asp:ListItem Value="ANULADO">ANULADO</asp:ListItem>
-                                    <asp:ListItem Value="PENDIENTE">PENDIENTE</asp:ListItem>
                                 </asp:DropDownList>
                             </div>
 
@@ -237,7 +217,7 @@
                                 T/C:
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
-                                <asp:TextBox ID="txtTipoCambio" CssClass="form-control mayusculas" PlaceHolder="T/C" runat="server" ReadOnly="true"></asp:TextBox>
+                                <asp:TextBox ID="txtTipoCambio" CssClass="form-control mayusculas" PlaceHolder="T/C" runat="server" TextMode="Number" step="0.01" ReadOnly="true"></asp:TextBox>
 
                             </div>
 
@@ -258,13 +238,13 @@
                                 Total C$:
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
-                                <asp:TextBox ID="txtTotalCordoba" CssClass="form-control mayusculas" PlaceHolder="Total C$" runat="server" ReadOnly="true"></asp:TextBox>
+                                <asp:TextBox ID="txtTotalCordoba" CssClass="form-control mayusculas" PlaceHolder="Total C$" TextMode="Number" step="0.01" runat="server" ReadOnly="true"></asp:TextBox>
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 Total $:
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
-                                <asp:TextBox ID="txtTotalDolar" CssClass="form-control mayusculas" PlaceHolder="Total $" runat="server" ReadOnly="true"></asp:TextBox>
+                                <asp:TextBox ID="txtTotalDolar" CssClass="form-control mayusculas" PlaceHolder="Total $" TextMode="Number" step="0.01" runat="server" ReadOnly="true"></asp:TextBox>
 
                             </div>
 
@@ -272,7 +252,7 @@
                                 Ingreso:
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
-                                <asp:TextBox ID="txtIngreso" CssClass="form-control mayusculas" PlaceHolder="Ingreso" runat="server" Enabled="false" AutoPostBack="true" OnTextChanged="txtIngreso_TextChanged"></asp:TextBox>
+                                <asp:TextBox ID="txtIngreso" CssClass="form-control mayusculas" PlaceHolder="Ingreso" TextMode="Number" step="0.01" runat="server" Enabled="false" AutoPostBack="true" OnTextChanged="txtIngreso_TextChanged"></asp:TextBox>
                             </div>
 
                         </div>
@@ -283,7 +263,7 @@
                                 Cambio:
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
-                                <asp:TextBox ID="txtCambio" CssClass="form-control mayusculas" PlaceHolder="Cambio" runat="server" ReadOnly="true"></asp:TextBox>
+                                <asp:TextBox ID="txtCambio" CssClass="form-control mayusculas" PlaceHolder="Cambio" runat="server" TextMode="Number" step="0.01" ReadOnly="true"></asp:TextBox>
 
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
@@ -310,7 +290,6 @@
                             <div class="col-lg-3 col-md-3 col-xs-3">
                                 <asp:RadioButton ID="rbtProducto" runat="server" GroupName="Opciones" AutoPostBack="true"
                                     OnCheckedChanged="RbtTodos_CheckedChanged" />
-                                <%--<asp:RadioButton runat="server" ID="rbtProducto" />--%>
                                 <strong>Producto</strong>
                             </div>
                             <div class="col-lg-3 col-md-3 col-xs-3">
@@ -346,7 +325,10 @@
                                 Valor:
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
-                                <asp:TextBox ID="txtPrecio" CssClass="form-control mayusculas" PlaceHolder="Valor" type="number" runat="server" Enabled="false"></asp:TextBox>
+                                <asp:TextBox ID="txtPrecio" CssClass="form-control mayusculas" PlaceHolder="Valor" TextMode="Number" step="0.01" runat="server" Enabled="false"></asp:TextBox>
+                              <%--  <asp:RegularExpressionValidator ID="revMonto" runat="server" ControlToValidate="txtPrecio" ForeColor="Red"
+                                    ErrorMessage="Ingrese un número válido con máximo 2 decimales" ValidationExpression="^\d+(\.\d{1,2})?$">
+                                </asp:RegularExpressionValidator>--%>
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 Cantidad:
@@ -481,14 +463,13 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Confirmar</h5>
                         </div>
-                        <div class="modal-body"> ¿Guardar la factura?</div>
+                        <div class="modal-body">¿Guardar la factura?</div>
                         <div class="modal-footer">
                             <button class="btn btn-danger" type="button" data-dismiss="modal" id="salir">No</button>
                             <asp:Button ID="btnConfirmar" runat="server" Text="Si" CssClass="btn btn-primary" OnClick="btnConfirmar_Click" />
+                        </div>
                     </div>
                 </div>
-            </div>
-
         </ContentTemplate>
 
         <Triggers>

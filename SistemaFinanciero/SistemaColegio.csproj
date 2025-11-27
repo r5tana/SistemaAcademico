@@ -517,7 +517,7 @@
     </Compile>
     <Compile Include="WebFormPay.aspx.designer.cs">
       <DependentUpon>WebFormPay.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="WebFormPrinterCountCash.aspx.cs">
       <DependentUpon>WebFormPrinterCountCash.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -67,7 +67,7 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 List<tmeinventario> lista = new List<tmeinventario>();
 
-                return lista = (from x in modeloFacturacion.tmeinventario where x.enventa.TrimEnd() == "SI" select x).ToList();
+                return lista = (from x in modeloFacturacion.tmeinventario where x.enventa == "SI" & x.estado == "ACTIVO" select x).ToList();
             }
             catch (Exception err)
             {
