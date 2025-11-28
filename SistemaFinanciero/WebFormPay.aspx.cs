@@ -6,6 +6,7 @@ using OfficeOpenXml.Style;
 using SistemaFinanciero.Account;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Util;
+using System.Xml.Linq;
 
 namespace SistemaFinanciero
 {
@@ -560,7 +562,7 @@ namespace SistemaFinanciero
 
         protected void btnConfirmar_Click(object sender, EventArgs e)
         {
-
+            List<tmefacturasdet> listaDetalleFacturta = new List<tmefacturasdet>();
             if (!string.IsNullOrEmpty(txtIngreso.Text))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "closeModalConfirm(); RemoveBackDrop();", true);
@@ -590,16 +592,18 @@ namespace SistemaFinanciero
                 consultaNegocio.InsertarFactura(factura);
                 consultaNegocio.ActualizarConsecutivoTabla(consecutivo.id_contador, (long)idFactura);
 
+                tmefacturasdet detalleFactura = null;
                 foreach (GridViewRow rows in GridProductos.Rows)
                 {
                     // insertar en detalle factura
-                    tmefacturasdet detalleFactura = new tmefacturasdet();
+                    detalleFactura = new tmefacturasdet();
                     detalleFactura.id_factura = factura.id_factura;
                     detalleFactura.nombre_item = rows.Cells[1].Text;
                     detalleFactura.preciounitario = Convert.ToDouble(rows.Cells[2].Text);
                     detalleFactura.cantidad = int.Parse(rows.Cells[3].Text);
                     detalleFactura.subtotal = Convert.ToDouble(rows.Cells[4].Text);
                     consultaNegocio.InsertarDetalleFactura(detalleFactura);
+                    listaDetalleFacturta.Add(detalleFactura);
 
                     // Si es un producto actualizar el stock
                     if (rbtProducto.Checked)
@@ -619,8 +623,8 @@ namespace SistemaFinanciero
 
                 LimpiarCampos();
 
-                alert = @"swal('Aviso!', 'Se registro la factura con No. " + factura.id_factura + "', 'success');";
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                GenerarPDF(factura, listaDetalleFacturta);
+
 
             }
             else
@@ -632,6 +636,192 @@ namespace SistemaFinanciero
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
         }
+
+        public void GenerarPDF(tmefacturas factura, List<tmefacturasdet> listaDetalle)
+        {
+            string rutaPdf = CrearEstructuraDocumento(factura, listaDetalle);
+
+            string script = $@"
+                    swal({{
+                        title: 'Éxito',
+                        text: 'Se registro el pago con Recibo No. {factura.id_factura}',
+                        type: 'success'
+                    }},
+                    function() {{
+                        window.open('{rutaPdf}', '_blank');
+                    }});
+                ";
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "AlertaPDF", script, true);
+
+        }
+
+        private string CrearEstructuraDocumento(tmefacturas factura, List<tmefacturasdet> listaDetalle)
+        {
+            string nombrePdf = "Recibo_" + factura.id_factura + ".pdf";
+
+            // Ruta física donde se guardará
+            string rutaFisica = Server.MapPath("~/Soporte/" + nombrePdf);
+                      
+            using (FileStream fs = new FileStream(rutaFisica, FileMode.Create))
+            {
+                Document document1 = new Document(PageSize.A4);
+                PdfWriter writer1 = PdfWriter.GetInstance(document1, fs);
+
+                //float anchoRecibo = 226.77f;
+                //float altoRecibo = 566.93f;
+                //Rectangle tamanioPersonalizado = new Rectangle(anchoRecibo, altoRecibo);
+                //Document document2 = new Document(tamanioPersonalizado);
+
+                Document document = new Document(new Rectangle(226.77f, 425.20f), 5f, 5f, 5f, 5f);
+
+                PdfWriter writer = PdfWriter.GetInstance(document, fs);
+                // Para hacer crecer la hoja
+
+                if (listaDetalle.Count > 4)
+                    document.SetPageSize(new Rectangle(226.77f, document.BottomMargin + writer.GetVerticalPosition(false)));
+
+
+                document.Open();
+
+                // Título
+                Font fontTitle = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10);
+                Font font9 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10);
+
+                Paragraph Titulo1 = new Paragraph("Instituto Pedagógico La Salle", new Font(Font.FontFamily.TIMES_ROMAN, 12));
+                Titulo1.Alignment = Element.ALIGN_CENTER;
+                document.Add(Titulo1);
+
+                Paragraph Titulo2 = new Paragraph("Reporte detallado Caja general", new Font(Font.FontFamily.TIMES_ROMAN, 11));
+                Titulo2.Alignment = Element.ALIGN_CENTER;
+                document.Add(Titulo2);
+
+                Paragraph Titulo3 = new Paragraph("No. Recibo: " + factura.id_factura.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 10));
+                Titulo3.Alignment = Element.ALIGN_CENTER;
+                document.Add(Titulo3);
+
+                document.Add(new Chunk("\n"));
+
+                Paragraph Titulo4 = new Paragraph("A Nombre : " + factura.anombrede.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 9));
+                Titulo4.Alignment = Element.ALIGN_LEFT;
+                document.Add(Titulo4);
+
+                Paragraph Titulo5 = new Paragraph("Fecha : " + factura.fecha?.ToString("dd/MM/yyyy"), new Font(Font.FontFamily.TIMES_ROMAN, 9));
+                Titulo5.Alignment = Element.ALIGN_LEFT;
+                document.Add(Titulo5);
+
+
+                Paragraph Titulo6 = new Paragraph("Forma de Pago : " + factura.forma_pago, new Font(Font.FontFamily.TIMES_ROMAN, 9));
+                Titulo6.Alignment = Element.ALIGN_LEFT;
+                document.Add(Titulo6);
+
+
+                Paragraph Titulo7 = new Paragraph("Cajero : " + factura.estado_por , new Font(Font.FontFamily.TIMES_ROMAN, 9));
+                Titulo7.Alignment = Element.ALIGN_LEFT;
+                document.Add(Titulo7);
+
+                document.Add(new Chunk("\n"));
+
+                Paragraph EncabezadoTabla = new Paragraph("Detalle de pagos", new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD | Font.UNDERLINE));
+                EncabezadoTabla.Alignment = Element.ALIGN_CENTER;
+                document.Add(EncabezadoTabla);
+
+                document.Add(new Chunk("\n"));
+
+                DataTable dt = new DataTable();
+                dt = ConvertirListaToDataTablePersonalizado(listaDetalle);
+
+                PdfPTable table = new PdfPTable(dt.Columns.Count);
+
+                float[] widths = new float[dt.Columns.Count];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                    widths[i] = 4f;
+
+                table.SetWidths(widths);
+                table.WidthPercentage = 90;
+
+                PdfPCell cell = new PdfPCell(new Phrase("columns"));
+                cell.Colspan = dt.Columns.Count;
+
+                table.WidthPercentage = 100;
+
+                // Encabezados en negrita y centrados
+                Font fontHeader = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, Font.BOLD);
+
+                foreach (DataColumn c in dt.Columns)
+                {
+                    PdfPCell headerCell = new PdfPCell(new Phrase(c.ColumnName, fontHeader));
+                    headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    headerCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    headerCell.BackgroundColor = new BaseColor(230, 230, 230); // gris suave
+                    table.AddCell(headerCell);
+                }
+
+                Font fontCell = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9);
+
+                foreach (DataRow r in dt.Rows)
+                {
+                    for (int h = 0; h < dt.Columns.Count; h++)
+                    {
+                        PdfPCell cellValue = new PdfPCell(new Phrase(r[h].ToString(), fontCell));
+
+                        // PRIMERA COLUMNA = IZQUIERDA + AJUSTE DE TEXTO
+                        if (h == 0)
+                        {
+                            cellValue.HorizontalAlignment = Element.ALIGN_LEFT; 
+                            cellValue.NoWrap = false;
+                        }
+                        else
+                        {
+                            cellValue.HorizontalAlignment = Element.ALIGN_CENTER;
+                        }
+
+                        cellValue.VerticalAlignment = Element.ALIGN_MIDDLE;
+                        table.AddCell(cellValue);
+                    }
+                }
+
+
+                document.Add(table);
+
+                document.Add(new Chunk("\n"));
+
+                Paragraph P11 = new Paragraph("Total Factura: C$ " + factura.total_cordobas, new Font(Font.FontFamily.TIMES_ROMAN, 10));
+                P11.Alignment = Element.ALIGN_LEFT;
+                document.Add(P11);
+
+                document.Close();
+                writer.Close();
+            }
+
+            // Retornar la ruta virtual para abrir en el navegador
+            return "/Soporte/" + nombrePdf;
+        }
+
+        public DataTable ConvertirListaToDataTablePersonalizado(List<tmefacturasdet> detalle)
+        {
+            DataTable table = new DataTable();
+
+            table.Columns.Add("Item", typeof(string));
+            table.Columns.Add("Precio (C$)", typeof(decimal));
+            table.Columns.Add("Cantidad", typeof(int));
+            table.Columns.Add("Subtotal (C$)", typeof(decimal));
+
+
+            // Llenado de filas con los datos de tu lista
+            foreach (var item in detalle)
+            {
+                DataRow row = table.NewRow();
+                row["Item"] = item.nombre_item;
+                row["Precio (C$)"] = item.preciounitario;
+                row["Cantidad"] = item.cantidad;
+                row["Subtotal (C$)"] = item.subtotal;
+                table.Rows.Add(row);
+            }
+
+            return table;
+        }
+
 
         public void LimpiarCampos()
         {

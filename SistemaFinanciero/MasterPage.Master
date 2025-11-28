@@ -110,7 +110,7 @@
 
                   <li class="nav-item active">
                     <a class="nav-link" href="WebFormPrinterCountCash.aspx">
-                        <i class="fas fa-fw fa-key"></i>
+                        <i class="fas fa-fw fa-print"></i>
                         <span>Ejemplo de impresion</span>
                     </a>
                 </li>

@@ -42,7 +42,7 @@ namespace Negocio
 
         public void ActualizarConsecutivoTabla(long id_contador, long consecutivoId)
         {
-            
+
             ConsultaDatos datosConsulta = new ConsultaDatos();
             datosConsulta.ActualizarConsecutivoTabla(id_contador, consecutivoId);
         }
@@ -58,6 +58,13 @@ namespace Negocio
         {
             ConsultaDatos datosConsulta = new ConsultaDatos();
             datosConsulta.ActualizarStock(idProducto, stockNuevo);
+        }
+
+
+        public List<tmefacturasdet> ListarDetalleFactura(string idFactura)
+        {
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            return datosConsulta.ListarDetalleFactura(idFactura);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -197,6 +198,29 @@ namespace Datos
             }
         }
 
+
+
+        public List<tmefacturasdet> ListarDetalleFactura(string idFactura)
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                 var factura = new List<tmefacturasdet>();
+
+                return factura = (from x in modeloFacturacion.tmefacturasdet where x.id_factura == idFactura select x).ToList();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error a listar detalle factura  " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
 
     }
 }
