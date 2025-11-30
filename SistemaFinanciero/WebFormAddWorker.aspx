@@ -147,6 +147,7 @@
                                        
                             </div>
                             <div class="col-lg-4 col-md-4 col-xs-6">
+                                <asp:TextBox ID="txtIdUsuarioActual" CssClass="form-control mayusculas" ReadOnly="true" PlaceHolder="Id" runat="server" Visible="false"></asp:TextBox>
                                 <asp:TextBox ID="txtlogin" CssClass="form-control mayusculas" ReadOnly="true" PlaceHolder="Usuario" runat="server"></asp:TextBox>
                                 <asp:Label ID="lblsms" runat="server" Text="El usuario será generado automáticamente" ForeColor="Green" Visible="false"></asp:Label>
                             </div>
@@ -180,7 +181,7 @@
                             <div class="col-lg-4 col-md-4 col-xs-6">
                                 <asp:TextBox ID="txtCargo" CssClass="form-control mayusculas" PlaceHolder="Apellidos" runat="server" ReadOnly="true"></asp:TextBox>
 
-                                <asp:DropDownList ID="ddlCargo" runat="server" CssClass="form-control">
+                                <asp:DropDownList ID="ddlCargo" runat="server" CssClass="form-control" OnSelectedIndexChanged="ddlCargo_SelectedIndexChanged" AutoPostBack="true">
                                     <asp:ListItem Value="N/A">SELECCIONE...</asp:ListItem>
                                     <asp:ListItem Value="ADMINISTRADOR">ADMINISTRADOR</asp:ListItem>
                                     <asp:ListItem Value="CAJERO">CAJERO</asp:ListItem>
@@ -199,13 +200,19 @@
 
                         <br />
 
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-xs-12">
-                                <asp:Label ID="lblerror" runat="server" ForeColor="Red" Text=""></asp:Label>
+                        <div class="row" id="divSerie" runat="server" visible="false">
+                            <div class="col-lg-2 col-md-2 col-xs-6">
+                                Serie Caja:
+           
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-6">
+                                <asp:DropDownList ID="ddlSerie" runat="server" CssClass="form-control">
+                                    <asp:ListItem Value="0">SELECCIONE...</asp:ListItem>
+                                </asp:DropDownList>
                             </div>
                         </div>
 
-
+                        <br />
 
                         <div class="text-center">
                             <asp:Button ID="btnActualizar" CssClass="btn btn-primary" runat="server" Text="Actualizar" OnClick="btnActualizar_Click" Visible="false" />

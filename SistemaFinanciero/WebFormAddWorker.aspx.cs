@@ -1,12 +1,15 @@
 ﻿using Entidades;
+using iTextSharp.text.pdf.codec.wmf;
 using Negocio;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Media.Media3D;
@@ -15,10 +18,8 @@ namespace SistemaFinanciero
 {
     public partial class WebFormAddWorker : System.Web.UI.Page
     {
-        List<tmxusuarios> listaUsuarios = null;
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-        TransaccionNegocio cajeroNegocio = new TransaccionNegocio();
-        Utilitario utilitario = null;
+        ConsultaNegocio consultaNegocio = new ConsultaNegocio();
         string alert = string.Empty;
 
 
@@ -44,6 +45,10 @@ namespace SistemaFinanciero
 
             GridTrabajadores.UseAccessibleHeader = true;
             GridTrabajadores.HeaderRow.TableSection = TableRowSection.TableHeader;
+
+            Session["Proceso"] = 1; // Nuevo registro
+
+
         }
 
         public void CargarUsuarios()
@@ -67,6 +72,9 @@ namespace SistemaFinanciero
             txtApellidos.Text = string.Empty;
             txtCargo.Text = string.Empty;
             ddlCargo.SelectedValue = "N/A";
+            divSerie.Visible = false;
+            Session["EsCajero"] = null;
+            Session["Proceso"] = null;
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
@@ -96,6 +104,11 @@ namespace SistemaFinanciero
 
                 usuarioNegocio.CrearUsuario(usuario);
 
+
+                if (ddlCargo.SelectedValue == "CAJERO")
+                    CrearCajaUsuario(usuario.id_usuario);
+
+
                 LimpiarCampos();
                 pnlDatos.Visible = false;
                 btnAgregar.Visible = true;
@@ -120,20 +133,65 @@ namespace SistemaFinanciero
             if (ValidarCampos(2))
             {
 
-                tmxusuarios usuario = new tmxusuarios();
+                tmxusuarios usuarioModificado = new tmxusuarios();
 
                 var UsuarioId = int.Parse(Session["Id"].ToString());
+                var usuarioEntidad = usuarioNegocio.ConsultarUsuarioId(UsuarioId);
 
-                usuario.id_usuario = UsuarioId;
-                usuario.nombres = txtNombres.Text.TrimEnd().ToUpper();
-                usuario.apellidos = txtApellidos.Text.TrimEnd().ToUpper();
+                usuarioModificado.id_usuario = UsuarioId;
+                usuarioModificado.nombres = txtNombres.Text.TrimEnd().ToUpper();
+                usuarioModificado.apellidos = txtApellidos.Text.TrimEnd().ToUpper();
 
                 if (ddlCargo.SelectedValue != "N/A")
-                    usuario.cargo = ddlCargo.SelectedValue;
+                    usuarioModificado.cargo = ddlCargo.SelectedValue;
                 else
-                    usuario.cargo = txtCargo.Text;
+                    usuarioModificado.cargo = txtCargo.Text;
 
-                usuarioNegocio.ActualizarUsuario(usuario);
+                usuarioNegocio.ActualizarUsuario(usuarioModificado);
+
+                //Se le cambio el cargo
+                if (usuarioEntidad.cargo.ToUpper().TrimEnd() != usuarioModificado.cargo.ToUpper().TrimEnd())
+                {
+                    if (usuarioEntidad.cargo.ToUpper().TrimEnd() == "CAJERO") // Antes era cajero
+                    {
+                        consultaNegocio.ActivarInactivarCaja(usuarioEntidad.id_usuario, 2); // Inactivar
+                    }
+                    else if (usuarioModificado.cargo.ToUpper().TrimEnd() == "CAJERO") // Se le cambio cargo a cajero
+                    {
+                        var existeCaja = consultaNegocio.ListarCajas().Where(x => x.id_usuario == usuarioModificado.id_usuario).FirstOrDefault();
+
+                        if (existeCaja != null)
+                        {
+                            consultaNegocio.ActivarInactivarCaja(usuarioEntidad.id_usuario, 1); // Activar
+                        }
+                        else
+                            CrearCajaUsuario(usuarioModificado.id_usuario);
+                    }
+                }
+                else
+                {
+                    if (usuarioModificado.cargo.ToUpper().TrimEnd() == "CAJERO")
+                    {
+                        bool actualizaSerie = false;
+                        string serie = Convert.ToString(ddlSerie.SelectedItem);
+                        var cajaUsuario = consultaNegocio.ConsultarCajaUsuario(usuarioEntidad.id_usuario);
+
+                        actualizaSerie = int.Parse(ddlSerie.SelectedValue) != 0
+                                                ? cajaUsuario.Serie != null
+                                                        ? cajaUsuario.Serie != serie
+                                                                ? true
+                                                        : false
+                                                : true
+                                        : false;
+
+
+
+                        if (actualizaSerie)
+                            consultaNegocio.ActualizarSerieCaja(usuarioEntidad.id_usuario, serie);
+
+                    }
+
+                }
 
                 LimpiarCampos();
                 btnAgregar.Visible = true;
@@ -174,6 +232,7 @@ namespace SistemaFinanciero
                 & ddlCargo.SelectedValue != "N/A")
                 {
                     bandera = true;
+
                 }
             }
             else // modificar usuario
@@ -182,6 +241,24 @@ namespace SistemaFinanciero
                 {
                     bandera = true;
                 }
+            }
+
+            if (Session["EsCajero"] != null)
+            {
+                // Validación para modificar o crear usuario
+                if (bool.Parse(Session["EsCajero"].ToString()))
+                {
+                    int total = ddlSerie.Items.Count - 1;
+                    if (total > 0 & int.Parse(ddlSerie.SelectedValue) == 0)
+                    {
+                        bandera = false;
+                        alert = @"swal('Aviso!', 'Existen series disponible, favor asigne una al usuario', 'error');";
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+
+                    }
+
+                }
+
             }
 
 
@@ -198,12 +275,13 @@ namespace SistemaFinanciero
 
             if (e.CommandName == "ModificarUsuario")
             {
-
                 LimpiarCampos();
                 pnlDatos.Visible = true;
                 btnGuardar.Visible = false;
                 btnActualizar.Visible = true;
                 lblsms.Visible = false;
+
+                Session["Proceso"] = 2; // Modificación de registro
 
                 if (datos != null)
                 {
@@ -211,15 +289,31 @@ namespace SistemaFinanciero
                     txtNombres.Text = datos.nombres;
                     txtApellidos.Text = datos.apellidos;
                     txtEstado.Text = datos.estado;
+                    txtIdUsuarioActual.Text = datos.id_usuario.ToString();
 
                     if (datos.cargo.TrimEnd() != "ADMINISTRADOR" & datos.cargo.TrimEnd() != "CAJERO" & datos.cargo.TrimEnd() != "CONTADORA")
                     {
                         txtCargo.Visible = true;
                         txtCargo.Text = datos.cargo;
                         ddlCargo.Visible = false;
+                        divSerie.Visible = false;
+
+                        Session["EsCajero"] = false;
                     }
                     else
                     {
+                        if (datos.cargo.TrimEnd() == "CAJERO")
+                        {
+
+                            Session["EsCajero"] = true;
+                            ConsultarCajaSerie(2); //tipoProceso = 2 -> modificación de datos
+                        }
+                        else
+                        {
+                            Session["EsCajero"] = false;
+                            divSerie.Visible = false;
+                        }
+
                         txtCargo.Visible = false;
                         ddlCargo.Visible = true;
                         ddlCargo.SelectedValue = datos.cargo;
@@ -232,6 +326,13 @@ namespace SistemaFinanciero
             else if (e.CommandName == "InactivarUsuario")
             {
                 usuarioNegocio.Activar_InactivarUsuario(index);
+
+                var usuarioInactivo = usuarioNegocio.ConsultarUsuarioActivoInactivoId(index);
+                if (usuarioInactivo.cargo.TrimEnd() == "CAJERO")
+                {
+                    int estado = (usuarioInactivo.estado == "ACTIVO" | usuarioInactivo.estado == "ACTIVA") ? 1 : 2;
+                    consultaNegocio.ActivarInactivarCaja(usuarioInactivo.id_usuario, estado);
+                }
 
                 alert = @"swal('Aviso!', 'Éxito', 'success');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
@@ -251,7 +352,9 @@ namespace SistemaFinanciero
                 }
             }
 
-            CargarUsuarios();
+
+            GridTrabajadores.UseAccessibleHeader = true;
+            GridTrabajadores.HeaderRow.TableSection = TableRowSection.TableHeader;
 
         }
 
@@ -330,6 +433,136 @@ namespace SistemaFinanciero
 
 
             return nombreGenerado;
+
+        }
+
+        public void ConsultarCajaSerie(int tipoProceso = 0)
+        {
+
+            CargarSerie();
+            List<tmxcontador> listaSeries1 = new List<tmxcontador>();
+            var listaCajas = consultaNegocio.ListarCajas();
+            var listaSeries = consultaNegocio.ListarContadorSeries();
+            bool bandera = false;
+
+            if (tipoProceso != 1) // Modificar usuario
+            {
+                var idUsuario = Convert.ToUInt32(txtIdUsuarioActual.Text);
+                var cajaUsuario = consultaNegocio.ListarCajas().Where(x => x.id_usuario == idUsuario).FirstOrDefault();
+                if (cajaUsuario == null)
+                {
+                    bandera = true;
+                }
+                else if (!string.IsNullOrEmpty(cajaUsuario.Serie))
+                {
+                    bandera = false;
+
+                    // 1. Obtener la caja que voy a editar
+                    var serieActual = cajaUsuario.Serie;
+                    var idContadorSerie = consultaNegocio.ConsultarContadorTabla(serieActual).id_contador;
+
+                    // Obtener las series que ya existen en caja a excepción de la que tiene el usuario
+                    var seriesEnCaja = new HashSet<string>(listaCajas.Where(x => x.id_usuario != idUsuario & x.Serie != null).Select(x => x.Serie));
+
+                    // Remover de la lista series todo lo que esté en caja (en este caso se usa tabla_nombre)
+                    listaSeries.RemoveAll(s => seriesEnCaja.Contains(s.tabla_nombre));
+
+                    foreach (var serie in seriesEnCaja)
+                    {
+                        var item = ddlSerie.Items.FindByText(serie.ToString());
+                        if (item != null)
+                            ddlSerie.Items.Remove(item);
+                    }
+
+                    ddlSerie.SelectedValue = idContadorSerie.ToString();
+
+                }
+                else
+                    bandera = true;
+            }
+            else
+                bandera = true;
+
+            if (bandera)
+            {
+                // Obtener las series que ya existen en caja
+                var seriesEnCaja = new HashSet<string>(listaCajas.Where(x => x.Serie != null).Select(x => x.Serie));
+
+                // Remover de la lista series todo lo que esté en caja (en este caso se usa tabla_nombre)
+                listaSeries.RemoveAll(s => seriesEnCaja.Contains(s.tabla_nombre));
+
+
+                foreach (var serie in seriesEnCaja)
+                {
+                    var item = ddlSerie.Items.FindByText(serie.ToString());
+                    if (item != null)
+                        ddlSerie.Items.Remove(item);
+                }
+            }
+
+            divSerie.Visible = true;
+        }
+
+
+        public void CrearCajaUsuario(int idUsuario)
+        {
+
+            var cajas = consultaNegocio.ListarCajas().OrderBy(x => int.Parse(x.id_caja)).ToList();
+            var listaOrdenada = cajas.Count + 1;
+            var id = cajas.Select(x => int.Parse(x.id_caja)).DefaultIfEmpty(0).Max() + 1;
+
+            tmecajas caja = new tmecajas();
+            caja.id_caja = Convert.ToString(id);
+            caja.nombre = "CAJA" + " " + (listaOrdenada);
+            caja.ubicacion = "SIGA";
+            caja.id_usuario = idUsuario;
+            caja.estado = "ACTIVO";
+            caja.tipocambio = 36;
+            caja.mensaje1 = "";
+            caja.mensaje2 = "";
+            if (int.Parse(ddlSerie.SelectedValue) != 0)
+                caja.Serie = Convert.ToString(ddlSerie.SelectedItem);
+
+            consultaNegocio.InsertarCaja(caja);
+
+        }
+
+        protected void ddlCargo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlCargo.SelectedValue == "CAJERO")
+            {
+                Session["EsCajero"] = true;
+                int tipoProceso = int.Parse(Session["Proceso"].ToString());
+                ConsultarCajaSerie(tipoProceso);
+                int total = ddlSerie.Items.Count - 1;
+
+                if (total == 0)
+                {
+                    alert = @"swal('Aviso!', 'No existen series para asingan al cajero', 'error');";
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+                }
+            }
+            else
+            {
+                Session["EsCajero"] = false;
+                divSerie.Visible = false;
+            }
+
+
+            GridTrabajadores.UseAccessibleHeader = true;
+            GridTrabajadores.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+
+        public void CargarSerie()
+        {
+            List<tmxcontador> listaSeries = new List<tmxcontador>();
+            listaSeries = consultaNegocio.ListarContadorSeries();
+            ddlSerie.DataSource = listaSeries;
+            ddlSerie.DataTextField = "tabla_nombre";
+            ddlSerie.DataValueField = "id_contador";
+            ddlSerie.DataBind();
+
+            ddlSerie.Items.Insert(0, new ListItem("SELECCIONE", "0"));
 
         }
     }

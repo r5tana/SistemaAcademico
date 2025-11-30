@@ -4,7 +4,7 @@
 
     <script type="text/javascript">
         function deshabilitarbtn() {
-            var btn = "<%= btnAbrir.ClientID %>";
+            var btn = "<%= btnAbrirModalEstudiante.ClientID %>";
             document.getElementById(btn).disabled = true;
             document.getElementById(btn).value = "Cargando...";
         }
@@ -52,7 +52,6 @@
         .mayusculas {
             text-transform: uppercase;
         }
-
     </style>
 
     <script type="text/javascript">
@@ -152,12 +151,12 @@
                                 A nombre:
                             </div>
                             <div class="col-lg-5 col-md-5 col-xs-5">
-                                <asp:TextBox ID="txtNombreFactura" CssClass="form-control mayusculas" PlaceHolder="Nombres y Apellidos" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtNombreFactura" CssClass="form-control mayusculas" PlaceHolder="Nombres y Apellidos" runat="server" Enabled="false"></asp:TextBox>
                             </div>
 
                             <div class="col-lg-1 col-md-1 col-xs-1">
-                                <asp:LinkButton ID="btnAbrir" runat="server" Text=""
-                                    CssClass="btn btn-primary" OnClick="btnAbrir_Click"
+                                <asp:LinkButton ID="btnAbrirModalEstudiante" runat="server" Text=""
+                                    CssClass="btn btn-primary" OnClick="btnAbrirModalEstudiante_Click"
                                     UseSubmitBehavior="false" OnClientClick="deshabilitarbtn()">
                                     <i class="glyphicon glyphicon-search"></i>
                                 </asp:LinkButton>
@@ -326,7 +325,7 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 <asp:TextBox ID="txtPrecio" CssClass="form-control mayusculas" PlaceHolder="Valor" TextMode="Number" step="0.01" runat="server" Enabled="false"></asp:TextBox>
-                              <%--  <asp:RegularExpressionValidator ID="revMonto" runat="server" ControlToValidate="txtPrecio" ForeColor="Red"
+                                <%--  <asp:RegularExpressionValidator ID="revMonto" runat="server" ControlToValidate="txtPrecio" ForeColor="Red"
                                     ErrorMessage="Ingrese un número válido con máximo 2 decimales" ValidationExpression="^\d+(\.\d{1,2})?$">
                                 </asp:RegularExpressionValidator>--%>
                             </div>
@@ -473,7 +472,7 @@
         </ContentTemplate>
 
         <Triggers>
-            <asp:PostBackTrigger ControlID="btnAbrir" />
+            <asp:PostBackTrigger ControlID="btnAbrirModalEstudiante" />
             <asp:PostBackTrigger ControlID="btnAgregar" />
             <asp:PostBackTrigger ControlID="btnGuardar" />
         </Triggers>

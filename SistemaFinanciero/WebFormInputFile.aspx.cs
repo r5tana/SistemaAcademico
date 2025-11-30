@@ -22,6 +22,7 @@ namespace SistemaFinanciero
             {
                 txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
             }
+
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
@@ -30,6 +31,11 @@ namespace SistemaFinanciero
             {
                 if (FileUpload2.HasFile)
                 {
+                    string carpeta = Server.MapPath("~/Soporte/");
+
+                    // Si no existe la carpeta, crearla
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
 
                     FileUpload2.SaveAs(Server.MapPath("~/Soporte/") + Path.GetFileName(FileUpload2.FileName));
                     string filePath = Server.MapPath("~/Soporte/") + FileUpload2.FileName;

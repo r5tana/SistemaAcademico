@@ -270,6 +270,28 @@ namespace Datos
             }
         }
 
+        public tmxusuarios ConsultarUsuarioActivoInactivoId(int idUsuario)
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                usuario = new tmxusuarios();
+
+                return usuario = (from x in modeloFacturacion.tmxusuarios where x.id_usuario == idUsuario select x).FirstOrDefault();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al consultar usuario id " + idUsuario + " " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
         #endregion
     }
 }

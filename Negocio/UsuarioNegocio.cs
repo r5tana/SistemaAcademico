@@ -53,6 +53,7 @@ namespace Negocio
             return datosUsuario.ConsultarUsuario(login);
 
         }
+
         public tmxusuarios ConsultarUsuarioId(int idUsuario)
         {
             UsuarioDatos datosUsuario = new UsuarioDatos();
@@ -86,6 +87,12 @@ namespace Negocio
             UserDatos.CambioClaveUsuario(idUsuario, nuevaClave);
         }
 
+
+        public tmxusuarios ConsultarUsuarioActivoInactivoId(int idUsuario)
+        {
+            UsuarioDatos UserDatos = new UsuarioDatos();
+            return UserDatos.ConsultarUsuarioActivoInactivoId(idUsuario);
+        }
 
         #endregion
 

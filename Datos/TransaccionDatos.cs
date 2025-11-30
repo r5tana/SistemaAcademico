@@ -20,6 +20,7 @@ namespace Datos
             try
             {
                 modeloFacturacion = new SistemaFacturacionEntities();
+                modeloFacturacion.Database.CommandTimeout = 300;
                 modeloFacturacion.tmeinfobancos.AddRange(banco);
                 modeloFacturacion.SaveChanges();
             }
@@ -51,6 +52,7 @@ namespace Datos
                     transacciones.estadopor = "BANPRO";
                     transacciones.estado = "1";
                     transacciones.id_factura_banco = idComprobante;
+                    modeloFacturacion.Database.CommandTimeout = 300;
                     modeloFacturacion.SaveChanges();
                 }
             }

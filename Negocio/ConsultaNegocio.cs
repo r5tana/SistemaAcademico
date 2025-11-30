@@ -16,6 +16,7 @@ namespace Negocio
             return datosConsulta.ConsultarCajaUsuario(idUsuario);
         }
 
+
         public List<tmeconceptos> ListaConceptos()
         {
             ConsultaDatos datosConsulta = new ConsultaDatos();
@@ -66,6 +67,40 @@ namespace Negocio
             ConsultaDatos datosConsulta = new ConsultaDatos();
             return datosConsulta.ListarDetalleFactura(idFactura);
         }
-    }
-}
 
+        public List<tmecajas> ListarCajas()
+        {
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            return datosConsulta.ListarCajas();
+        }
+
+        public List<tmxcontador> ListarContadorSeries()
+        {
+
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            return datosConsulta.ListarContadorSeries();
+        }
+
+        public void InsertarCaja(tmecajas caja)
+        {
+
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            datosConsulta.InsertarCaja(caja);
+
+        }
+
+        public void ActivarInactivarCaja(int idUsuario, int tipo)
+        {
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            datosConsulta.ActivarInactivarCaja(idUsuario, tipo);
+        }
+
+        public void ActualizarSerieCaja(int idUsuario, string serie)
+        {
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            datosConsulta.ActualizarSerieCaja(idUsuario, serie);
+        }
+
+    }
+
+}

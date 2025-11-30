@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades;
@@ -37,6 +38,7 @@ namespace Datos
                     modeloFacturacion.Dispose();
             }
         }
+
 
         public List<tmeconceptos> ListaConceptos()
         {
@@ -206,7 +208,7 @@ namespace Datos
             try
             {
                 modeloFacturacion = new SistemaFacturacionEntities();
-                 var factura = new List<tmefacturasdet>();
+                var factura = new List<tmefacturasdet>();
 
                 return factura = (from x in modeloFacturacion.tmefacturasdet where x.id_factura == idFactura select x).ToList();
             }
@@ -222,5 +224,125 @@ namespace Datos
             }
         }
 
+
+        public List<tmecajas> ListarCajas()
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                List<tmecajas> listaCaja = new List<tmecajas>();
+
+                return listaCaja = (from x in modeloFacturacion.tmecajas select x).ToList();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al listar cajar " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+
+        public List<tmxcontador> ListarContadorSeries()
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                List<tmxcontador> listaContador = new List<tmxcontador>();
+
+                return listaContador = (from x in modeloFacturacion.tmxcontador where x.TipoContador == 2 select x).ToList();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al listar contador de series " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public void InsertarCaja(tmecajas caja)
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                modeloFacturacion.tmecajas.Add(caja);
+                modeloFacturacion.SaveChanges();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al guardar la caja " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public void ActivarInactivarCaja(int idUsuario, int tipo)
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                caja = new tmecajas();
+
+                caja = (from x in modeloFacturacion.tmecajas where x.id_usuario == idUsuario select x).FirstOrDefault();
+                if (caja != null)
+                {
+                    if (tipo == 1) //Activar
+                        caja.estado = "ACTIVO";
+                    else
+                        caja.estado = "INACTIVO";
+
+                    modeloFacturacion.SaveChanges();
+                }
+            }
+            catch (Exception err)
+            {
+                throw new Exception("Error al actualizar activar/inactivar caja del usuario " + idUsuario + " " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public void ActualizarSerieCaja(int idUsuario, string serie)
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                caja = new tmecajas();
+
+                caja = (from x in modeloFacturacion.tmecajas where x.id_usuario == idUsuario select x).FirstOrDefault();
+                if (caja != null)
+                {
+                    caja.Serie = serie;
+                    modeloFacturacion.SaveChanges();
+                }
+            }
+            catch (Exception err)
+            {
+                throw new Exception("Error al actualizar serie del usuario " + idUsuario + " " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
     }
 }

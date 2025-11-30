@@ -66,11 +66,26 @@ namespace SistemaFinanciero
             var detalleCaja = consultaNegocio.ConsultarCajaUsuario(idUsuario);
             if (detalleCaja != null)
             {
+
+                Session["DatosCaja"] = detalleCaja;
                 txtIdCaja.Text = detalleCaja.id_caja;
                 txtCaja.Text = detalleCaja.nombre.TrimEnd();
                 txtTipoCambio.Text = detalleCaja.tipocambio.ToString();
                 txtUsuarioProcesa.Text = login;
                 txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                txtNombreFactura.Enabled = false;
+                btnAbrirModalEstudiante.Enabled = false;
+                ddlFormaPago.Enabled = false;
+                rbtConcepto.Enabled = false;
+                rbtProducto.Enabled = false;
+                rbtTransacciones.Enabled = false;
+                rbtOtros.Enabled = false;
+
+                alert = @"swal('Aviso!', 'No tiene caja activa para ingresar pagos', 'error');";
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
         }
 
@@ -87,9 +102,15 @@ namespace SistemaFinanciero
             GridEstudiantes.Visible = true;
 
 
+            if (GridProductos.Rows.Count != 0)
+            {
+                GridProductos.UseAccessibleHeader = true;
+                GridProductos.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
+
         }
 
-        protected void btnAbrir_Click(object sender, EventArgs e)
+        protected void btnAbrirModalEstudiante_Click(object sender, EventArgs e)
         {
             CargarEstudiantes();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
@@ -103,8 +124,6 @@ namespace SistemaFinanciero
             GridViewRow row = GridEstudiantes.Rows[index];
             if (e.CommandName == "Buscar")
             {
-
-                // Si usas DataKeys
                 string idEstudiante = GridEstudiantes.DataKeys[index].Value.ToString();
 
                 txtNombreFactura.Text = Server.HtmlDecode(row.Cells[2].Text.TrimEnd() + " " + row.Cells[3].Text.TrimEnd());
@@ -125,11 +144,11 @@ namespace SistemaFinanciero
 
                 if (rbtTransacciones.Checked)
                 {
-                    if (!string.IsNullOrEmpty(txtNombreFactura.Text))
+                    if (!string.IsNullOrEmpty(txtNombreFactura.Text) & !string.IsNullOrEmpty(txtCodEstudiante.Text))
                     {
                         txtNombreFactura.Enabled = true;
-                        var transacciones = transaccionNegocio.ListaTransaccionesPendientesEstudiante(txtCodEstudiante.Text).OrderBy(x => x.DescripcionTransaccion).ToList();
-                        if (transacciones != null)
+                        var transacciones = transaccionNegocio.ListaTransaccionesPendientesEstudiante(txtCodEstudiante.Text);
+                        if (transacciones.Count > 0)
                         {
                             Session["ListaTransaccionFactura"] = transacciones;
                             txtPrecio.Enabled = false;
@@ -143,7 +162,7 @@ namespace SistemaFinanciero
                             TxtOtraTransaccion.Visible = false;
 
                             ddlNombreTransaccion.Items.Clear();
-                            ddlNombreTransaccion.DataSource = transacciones;
+                            ddlNombreTransaccion.DataSource = transacciones.OrderBy(x => x.DescripcionTransaccion).ToList();
                             ddlNombreTransaccion.DataTextField = "DescripcionTransaccion";
                             ddlNombreTransaccion.DataValueField = "IdTransaccion";
                             ddlNombreTransaccion.DataBind();
@@ -155,11 +174,17 @@ namespace SistemaFinanciero
                             txtPrecio.Enabled = false;
                             txtCantidad.Enabled = false;
                             btnAgregar.Enabled = false;
+                            txtNombreFactura.Enabled = false;
+                            ddlNombreTransaccion.Enabled = false;
                             ddlNombreTransaccion.Items.Clear();
                             ddlNombreTransaccion.Items.Insert(0, new System.Web.UI.WebControls.ListItem("SELECCIONE", "0"));
 
-                            alert = @"swal('Aviso!', 'Estudiante seleccionado no tiene transacciones pendientes', 'error');";
+                            alert = @"swal('Aviso!', 'Estudiante " + txtNombreFactura.Text.TrimEnd() + " no tiene transacciones pendientes', 'error');";
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+
+                            rbtTransacciones.Checked = false;
+                            txtCodEstudiante.Text = string.Empty;
+                            txtNombreFactura.Text = string.Empty;
                         }
 
                     }
@@ -174,6 +199,8 @@ namespace SistemaFinanciero
                         TxtOtraTransaccion.Visible = false;
                         divStock.Visible = false;
                         txtNombreFactura.Enabled = false;
+                        txtNombreFactura.Text = string.Empty;
+                        txtCodEstudiante.Text = string.Empty;
                         ddlNombreTransaccion.Items.Clear();
                         ddlNombreTransaccion.Items.Insert(0, new System.Web.UI.WebControls.ListItem("SELECCIONE", "0"));
 
@@ -188,13 +215,13 @@ namespace SistemaFinanciero
                     {
 
                         divStock.Visible = true;
-                        var productos = consultaNegocio.ListaInventario().OrderBy(x => x.prod_nombre).ToList();
-                        if (productos != null)
+                        var productos = consultaNegocio.ListaInventario();
+                        if (productos.Count > 0)
                         {
                             txtPrecio.Enabled = false;
                             txtCantidad.Enabled = true;
                             btnAgregar.Enabled = true;
-                            txtNombreFactura.Enabled = true;
+                            txtNombreFactura.Enabled = false;
                             ddlNombreTransaccion.Enabled = true;
                             ddlNombreTransaccion.Visible = true;
 
@@ -203,7 +230,7 @@ namespace SistemaFinanciero
 
                             ddlNombreTransaccion.Items.Clear();
                             Session["ListaProductosFactura"] = productos;
-                            ddlNombreTransaccion.DataSource = productos;
+                            ddlNombreTransaccion.DataSource = productos.OrderBy(x => x.prod_nombre).ToList();
                             ddlNombreTransaccion.DataTextField = "prod_nombre";
                             ddlNombreTransaccion.DataValueField = "id_inventario";
                             ddlNombreTransaccion.DataBind();
@@ -223,13 +250,13 @@ namespace SistemaFinanciero
                     else if (rbtConcepto.Checked)
                     {
 
-                        var concepto = consultaNegocio.ListaConceptos().OrderBy(x => x.nombre).ToList();
-                        if (concepto != null)
+                        var concepto = consultaNegocio.ListaConceptos();
+                        if (concepto.Count > 0)
                         {
                             txtPrecio.Enabled = false;
                             txtCantidad.Enabled = true;
                             btnAgregar.Enabled = true;
-                            txtNombreFactura.Enabled = true;
+                            txtNombreFactura.Enabled = false;
                             ddlNombreTransaccion.Enabled = true;
                             ddlNombreTransaccion.Visible = true;
 
@@ -238,7 +265,7 @@ namespace SistemaFinanciero
 
                             ddlNombreTransaccion.Items.Clear();
                             Session["ListaConceptoFactura"] = concepto;
-                            ddlNombreTransaccion.DataSource = concepto;
+                            ddlNombreTransaccion.DataSource = concepto.OrderBy(x => x.nombre).ToList();
                             ddlNombreTransaccion.DataTextField = "nombre";
                             ddlNombreTransaccion.DataValueField = "id_concepto";
                             ddlNombreTransaccion.DataBind();
@@ -567,13 +594,20 @@ namespace SistemaFinanciero
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "closeModalConfirm(); RemoveBackDrop();", true);
 
-                var noombreTabla = "tmefacturas";
-                var consecutivo = consultaNegocio.ConsultarContadorTabla(noombreTabla);
-                var idFactura = consecutivo.tabla_contador + 1;
+                
+
+                var datosCaja = (tmecajas)Session["DatosCaja"];
+                // Si el cajero no tiene serie, se continua con el idFactura
+                var nombreTabla = datosCaja.Serie !=  null ? datosCaja.Serie.TrimEnd() : "tmefacturas";
+               
+                var consecutivo = consultaNegocio.ConsultarContadorTabla(nombreTabla);
+                var idFactura = consecutivo.id_contador != 43 ? consecutivo.tabla_contador : consecutivo.tabla_contador + 1;
+                var idRecibo = consecutivo.id_contador != 43 ? Convert.ToString(idFactura + "" + nombreTabla) : Convert.ToString(idFactura);
+                var idContador = consecutivo.id_contador != 43 ? idFactura + 1 : idFactura;
 
                 // Insertar en la tabla factura
                 tmefacturas factura = new tmefacturas();
-                factura.id_factura = Convert.ToString(idFactura);
+                factura.id_factura = idRecibo;
                 factura.tipo_factura = "MANUAL";
                 factura.id_caja = txtIdCaja.Text.ToString();
                 factura.fecha = Convert.ToDateTime(txtFecha.Text);
@@ -590,7 +624,7 @@ namespace SistemaFinanciero
                 factura.forma_pago = Convert.ToString(ddlFormaPago.SelectedItem);
                 factura.detalles = "";
                 consultaNegocio.InsertarFactura(factura);
-                consultaNegocio.ActualizarConsecutivoTabla(consecutivo.id_contador, (long)idFactura);
+                consultaNegocio.ActualizarConsecutivoTabla(consecutivo.id_contador, (long)idContador);
 
                 tmefacturasdet detalleFactura = null;
                 foreach (GridViewRow rows in GridProductos.Rows)
@@ -659,10 +693,15 @@ namespace SistemaFinanciero
         private string CrearEstructuraDocumento(tmefacturas factura, List<tmefacturasdet> listaDetalle)
         {
             string nombrePdf = "Recibo_" + factura.id_factura + ".pdf";
+            string carpeta = Server.MapPath("~/Soporte/");
+
+            // Si no existe la carpeta, crearla
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
 
             // Ruta física donde se guardará
             string rutaFisica = Server.MapPath("~/Soporte/" + nombrePdf);
-                      
+
             using (FileStream fs = new FileStream(rutaFisica, FileMode.Create))
             {
                 Document document1 = new Document(PageSize.A4);

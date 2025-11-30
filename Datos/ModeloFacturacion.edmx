@@ -753,6 +753,7 @@ advertencia 6013: La tabla o vista 'SIGA.dbo.tme_pendientespago' no tiene defini
           <Property Name="tipocambio" Type="float" />
           <Property Name="mensaje1" Type="nvarchar" MaxLength="50" />
           <Property Name="mensaje2" Type="nvarchar" MaxLength="50" />
+			<Property Name="Serie" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="tmecategorias">
           <Key>
@@ -978,6 +979,7 @@ advertencia 6013: La tabla o vista 'SIGA.dbo.tmpexporta' no tiene definida una c
           <Property Name="id_contador" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="tabla_nombre" Type="nvarchar" MaxLength="100" />
           <Property Name="tabla_contador" Type="bigint" />
+			<Property Name="TipoContador" Type="int" />
         </EntityType>
         <EntityType Name="tmxemailconf">
           <Key>
@@ -2838,6 +2840,7 @@ error 6004: Una relación hace referencia a la tabla 'SIGA.dbo.tmacertificadosde
           <Property Name="tipocambio" Type="Double" />
           <Property Name="mensaje1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="mensaje2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+			<Property Name="Serie" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tmxusuarios" Relationship="Self.FK_tmecajas_tmxusuarios" FromRole="tmecajas" ToRole="tmxusuarios" />
           <NavigationProperty Name="tmefacturas" Relationship="Self.FK_tmefacturas_tmecajas1" FromRole="tmecajas" ToRole="tmefacturas" />
         </EntityType>
@@ -3072,6 +3075,7 @@ error 6004: Una relación hace referencia a la tabla 'SIGA.dbo.tmacertificadosde
           <Property Name="id_contador" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tabla_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="tabla_contador" Type="Int64" />
+			<Property Name="TipoContador" Type="Int32" />
         </EntityType>
         <EntityType Name="tmxemailconf">
           <Key>
@@ -4859,6 +4863,7 @@ error 6004: Una relación hace referencia a la tabla 'SIGA.dbo.tmacertificadosde
                 <ScalarProperty Name="tipocambio" ColumnName="tipocambio" />
                 <ScalarProperty Name="mensaje1" ColumnName="mensaje1" />
                 <ScalarProperty Name="mensaje2" ColumnName="mensaje2" />
+				  <ScalarProperty Name="Serie" ColumnName="Serie" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5089,7 +5094,8 @@ error 6004: Una relación hace referencia a la tabla 'SIGA.dbo.tmacertificadosde
               <MappingFragment StoreEntitySet="tmxcontador">
                 <ScalarProperty Name="id_contador" ColumnName="id_contador" />
                 <ScalarProperty Name="tabla_nombre" ColumnName="tabla_nombre" />
-                <ScalarProperty Name="tabla_contador" ColumnName="tabla_contador" />
+				  <ScalarProperty Name="tabla_contador" ColumnName="tabla_contador" />
+                <ScalarProperty Name="TipoContador" ColumnName="TipoContador" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

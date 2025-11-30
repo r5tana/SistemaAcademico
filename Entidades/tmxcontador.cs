@@ -17,5 +17,6 @@ namespace Entidades
         public long id_contador { get; set; }
         public string tabla_nombre { get; set; }
         public Nullable<long> tabla_contador { get; set; }
+        public Nullable<int> TipoContador { get; set; }
     }
 }

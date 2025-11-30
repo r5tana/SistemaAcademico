@@ -28,6 +28,7 @@ namespace Entidades
         public Nullable<double> tipocambio { get; set; }
         public string mensaje1 { get; set; }
         public string mensaje2 { get; set; }
+        public string Serie { get; set; }
     
         public virtual tmxusuarios tmxusuarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

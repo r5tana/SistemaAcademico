@@ -51,6 +51,15 @@ namespace SistemaFinanciero
         protected global::System.Web.UI.WebControls.Panel pnlDatos;
 
         /// <summary>
+        /// Control txtIdUsuarioActual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtIdUsuarioActual;
+
+        /// <summary>
         /// Control txtlogin.
         /// </summary>
         /// <remarks>
@@ -114,13 +123,22 @@ namespace SistemaFinanciero
         protected global::System.Web.UI.WebControls.TextBox txtEstado;
 
         /// <summary>
-        /// Control lblerror.
+        /// Control divSerie.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblerror;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divSerie;
+
+        /// <summary>
+        /// Control ddlSerie.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSerie;
 
         /// <summary>
         /// Control btnActualizar.
