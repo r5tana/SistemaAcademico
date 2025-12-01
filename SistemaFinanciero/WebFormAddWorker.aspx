@@ -88,9 +88,11 @@
 
                             extend: 'excel',
                             text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
-                            messageTop: 'Lista de usuarios',
+                            messageTop: 'Reporte de usuarios del sistema',
                             autoFilter: true,
+                            title: 'Instituto Pedagógico La Salle',
                             className: 'btn btn-success',
+                            filename: 'Reporte de usuarios',
                             exportOptions: {
                                 columns: [4, 5, 6, 7, 8, 9, 10, 11, 12]
                                 //modifier: {
@@ -104,16 +106,18 @@
                             extend: 'pdf',
                             orientation: 'landscape',
                             pageSize: 'LETTER', //LEGAL
-                            title: 'Reporte Usuario',
+                            messageTop: 'Reporte de usuarios del sistema',
+                            title: 'Instituto Pedagógico La Salle',
                             exportOptions: {
                                 columns: [4, 5, 6, 7, 8, 9, 10, 11, 12]
                             },
-                            filename: 'Reporte ',
+                            filename: 'Reporte de usuarios',
                             text: '<i class="fa fa-file-pdf-o"></i> Exportar PDF',
                             className: 'btn btn-info',
                             customize: function (doc) {
-                                doc.defaultStyle.fontSize = 6;
-                                doc.styles.tableHeader.fontSize = 6;
+                                doc.defaultStyle.fontSize = 8;
+                                doc.styles.tableHeader.fontSize = 8;
+                                doc.defaultStyle.alignment = 'center';
                                 doc.pageMargins = [10, 10, 10, 10];
 
                             }

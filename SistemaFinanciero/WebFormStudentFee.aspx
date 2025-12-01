@@ -82,6 +82,9 @@
                             text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
                             autoFilter: true,
                             className: 'btn btn-success',
+                            title: 'Instituto Pedagógico La Salle',
+                            messageTop: 'Reporte de Aranceles por Estudiante',
+                            filename: 'Reporte de Aranceles',
                             exportOptions: {
                                 //columns: [3, 4]
                                 modifier: {
@@ -93,8 +96,9 @@
                             extend: 'pdf',
                             text: 'Imprimir PDF',
                             className: 'btn btn-danger',
-                            messageTop: 'Aranceles por Estudiante',
-                            title: 'Reporte Trabajadores',
+                            messageTop: 'Reporte de Aranceles por Estudiante',
+                            title: 'Instituto Pedagógico La Salle',
+                            filename: 'Reporte de Aranceles',
                             exportOptions: {
                                 //columns: [3, 4,]
                                 modifier: {
@@ -120,36 +124,7 @@
                     scrollCollapse: true,
                     scroller: true,
                     buttons: [
-                        {
-                            extend: 'excel',
-                            text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
-                            autoFilter: true,
-                            className: 'btn btn-success',
-                            exportOptions: {
-                                //columns: [3, 4]
-                                modifier: {
-                                    page: 'all'
-                                }
-                            }
-                        },
-                        {
-                            extend: 'pdf',
-                            text: 'Imprimir PDF',
-                            className: 'btn btn-danger',
-                            messageTop: 'Aranceles por Estudiante',
-                            title: 'Reporte Trabajadores',
-                            exportOptions: {
-                                //columns: [3, 4,]
-                                modifier: {
-                                    page: 'all'
-                                }
-                            },
-                            customize: function (doc) {
-                                doc.defaultStyle.fontSize = 10;
-                                doc.defaultStyle.alignment = 'center';
-                                doc.styles.tableHeader.fontSize = 10;
-                            }
-                        }
+                        
                     ]
                 });
 

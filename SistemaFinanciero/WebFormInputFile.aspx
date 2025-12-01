@@ -57,35 +57,7 @@
                         scrollCollapse: true,
                         scroller: true,
                         buttons: [
-                            //'copyHtml5',
-                            //'excelHtml5',
-                            //'csvHtml5',
-                            //'pdfHtml5'
-                            {
-                                extend: 'excel',
-                                text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
-                                className: 'btn btn-success',
-                                exportOptions: {
-                                    modifier: {
-                                        page: 'all'
-                                    }
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                orientation: 'landscape',
-                                pageSize: 'LETTER',
-                                title: 'Detalle Pagos',
-                                filename: 'Reporte ',
-                                text: '<i class="fa fa-file-pdf-o"></i> Exportar PDF',
-                                className: 'btn btn-info',
-                                customize: function (doc) {
-                                    doc.defaultStyle.fontSize = 6;
-                                    doc.styles.tableHeader.fontSize = 6;
-                                    doc.pageMargins = [10, 10, 10, 10];
 
-                                }
-                            }
                         ]
                     });
                 });
@@ -105,7 +77,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <asp:Label ID="lblcomprobante" runat="server" Text="Cargar Comprobante"></asp:Label>
+                <asp:Label ID="lblcomprobante" runat="server" Text="Cargar Archivo de Aranceles por Banco"></asp:Label>
             </h3>
         </div>
         <div class="panel-body">

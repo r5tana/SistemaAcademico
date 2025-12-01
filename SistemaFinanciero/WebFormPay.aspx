@@ -132,6 +132,14 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
 
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <div style="color: #007bff; text-align: center; font-size: large; font-weight: bold" class="alert alert-secondary">
+                        Gestión de pagos
+                    </div>
+                </div>
+            </div>
+
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Recibo</h6>
