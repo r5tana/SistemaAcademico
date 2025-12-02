@@ -37,11 +37,6 @@ namespace SistemaFinanciero
 
         protected void btnAcceder_Click(object sender, EventArgs e)
         {
-            //Session["Login"] = "rquintana";
-            //Session["IdUsuario"] = "001";
-            //Session["RolUsuario"] = "Cajero";
-
-            //Response.Redirect("WebFormInicio.aspx");
 
             Captcha1.ValidateCaptcha(txtCaptcha.Text.Trim());
 

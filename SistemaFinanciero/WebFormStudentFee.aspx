@@ -77,27 +77,34 @@
                         }
                     },
                     buttons: [
-                        {
+                        <%--{
                             extend: 'excel',
                             text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
                             autoFilter: true,
                             className: 'btn btn-success',
                             title: 'Instituto Pedagógico La Salle',
-                            messageTop: 'Reporte de Aranceles por Estudiante',
+                            //messageTop: 'Reporte de Aranceles por Estudiante',
+                            messageTop: function () {
+                                var codigo = $('#<%= txtEstudiante.ClientID %>').val();
+                                var nombre = $('#<%= txtNombres.ClientID %>').val();
+
+                                return 'Reporte de Aranceles por Estudiante' + '\n' +
+                                    'Código: ' + codigo + ' | Nombre: ' + nombre;
+                            },
                             filename: 'Reporte de Aranceles',
                             exportOptions: {
-                                //columns: [3, 4]
                                 modifier: {
                                     page: 'all'
                                 }
                             }
-                        },
+
+                        },--%>
                         {
                             extend: 'pdf',
                             text: 'Imprimir PDF',
                             className: 'btn btn-danger',
-                            messageTop: 'Reporte de Aranceles por Estudiante',
-                            title: 'Instituto Pedagógico La Salle',
+                            //messageTop: 'Reporte de Aranceles por Estudiante',
+                            //title: 'Instituto Pedagógico La Salle',
                             filename: 'Reporte de Aranceles',
                             exportOptions: {
                                 //columns: [3, 4,]
@@ -106,9 +113,70 @@
                                 }
                             },
                             customize: function (doc) {
+                                // 1. Obtener los valores de los TextBoxes
+                                var codigoEstudiante = $('#<%= txtEstudiante.ClientID %>').val(); // $('#txtEstudiante').val();
+                                var nombreEstudiante = $('#<%= txtNombres.ClientID %>').val(); // $('#txtNombres').val();
+
+                                // 2. Definir los textos personalizados
+                                var tituloPrincipal = 'Instituto Pedagógico La Salle';
+                                var subtituloReporte = 'Reporte de Aranceles por Estudiantes';
+                                var subtituloDetalle = 'Código: ' + codigoEstudiante + ' | Nombre: ' + nombreEstudiante;
+
+                                // 3. Crear el nuevo contenido de encabezado
+                                var newHeader = [
+                                    {
+                                        text: tituloPrincipal,
+                                        style: 'headerStyle',
+                                        alignment: 'center',
+                                        margin: [0, 0, 0, 5] // Ajuste de margen inferior
+                                    },
+                                    {
+                                        text: subtituloReporte,
+                                        style: 'subheaderStyle',
+                                        alignment: 'center',
+                                        margin: [0, 0, 0, 5]
+                                    },
+                                    {
+                                        text: subtituloDetalle,
+                                        style: 'detailStyle',
+                                        alignment: 'left',
+                                        margin: [0, 0, 0, 15] // Margen inferior para separar de la tabla
+                                    }
+                                ];
+
+                                // 4. Reemplazar el contenido actual (que incluye el título por defecto)
+                                // doc.content es un array de objetos. El primer elemento es el título y los siguientes son la tabla.
+                                // Insertamos el nuevo encabezado antes de la tabla (que está en doc.content[0] después de que DataTables ha procesado el PDF por defecto)
+                                doc.content.splice(0, 1); // Elimina el título por defecto de DataTables
+
+                                // Añadir el nuevo encabezado al inicio del array de contenido
+                                doc.content = newHeader.concat(doc.content);
+
+                                // 5. Definir estilos personalizados
+                                doc.styles = doc.styles || {};
+
+                                doc.styles.headerStyle = {
+                                    fontSize: 14, // Tamaño más grande para el título principal
+                                    bold: true,
+                                    alignment: 'center'
+                                };
+
+                                doc.styles.subheaderStyle = {
+                                    fontSize: 12,
+                                    bold: true,
+                                    alignment: 'center'
+                                };
+
+                                doc.styles.detailStyle = {
+                                    fontSize: 10,
+                                    bold: false,
+                                    alignment: 'left' // Alineado a la izquierda según tu descripción
+                                };
+
+                                // 6. Aplicar estilos generales para la tabla
                                 doc.defaultStyle.fontSize = 10;
-                                doc.defaultStyle.alignment = 'center';
                                 doc.styles.tableHeader.fontSize = 10;
+                                //doc.styles.tableHeader.fillColor = '#CCCCCC'; // Opcional: fondo gris para el encabezado de la tabla
                             }
                         }
                     ]
@@ -124,7 +192,7 @@
                     scrollCollapse: true,
                     scroller: true,
                     buttons: [
-                        
+
                     ]
                 });
 
@@ -231,8 +299,6 @@
                             <asp:BoundField DataField="estadopor" HeaderText="Estado Por" SortExpression="estadopor" />
                             <asp:BoundField DataField="annio_lectivo" HeaderText="Año" SortExpression="annio_lectivo" />
 
-                            <%--<asp:BoundField DataField="Fecha_Carga" HeaderText="Fecha_Carga" SortExpression="Fecha_Carga" />                            
-                            <asp:BoundField DataField="fecha_vencimiento" HeaderText="fecha_vencimiento" SortExpression="fecha_vencimiento" />/>--%>
                         </Columns>
                         <EditRowStyle BorderStyle="None" />
                         <EmptyDataRowStyle BorderStyle="None" />
