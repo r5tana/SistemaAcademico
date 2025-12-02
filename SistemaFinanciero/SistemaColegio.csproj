@@ -305,6 +305,7 @@
     <Content Include="WebFormInputFile.aspx" />
     <Content Include="WebFormPassword.aspx" />
     <Content Include="WebFormPay.aspx" />
+    <Content Include="WebFormReports.aspx" />
     <Content Include="WebFormStudentFee.aspx" />
     <None Include="Properties\PublishProfiles\DesarrolloPublicado.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
@@ -524,6 +525,13 @@
     </Compile>
     <Compile Include="WebFormPay.aspx.designer.cs">
       <DependentUpon>WebFormPay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebFormReports.aspx.cs">
+      <DependentUpon>WebFormReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormReports.aspx.designer.cs">
+      <DependentUpon>WebFormReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebFormStudentFee.aspx.cs">
       <DependentUpon>WebFormStudentFee.aspx</DependentUpon>

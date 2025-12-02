@@ -631,11 +631,15 @@ namespace SistemaFinanciero
                 {
                     // insertar en detalle factura
                     detalleFactura = new tmefacturasdet();
+                    detalleFactura.id_item = (!rbtOtros.Checked) ? rows.Cells[0].Text : "0";
                     detalleFactura.id_factura = factura.id_factura;
                     detalleFactura.nombre_item = rows.Cells[1].Text;
                     detalleFactura.preciounitario = Convert.ToDouble(rows.Cells[2].Text);
                     detalleFactura.cantidad = int.Parse(rows.Cells[3].Text);
                     detalleFactura.subtotal = Convert.ToDouble(rows.Cells[4].Text);
+                    detalleFactura.tipo_item = rbtConcepto.Checked ? "CONCEPTO" : rbtProducto.Checked
+                                                ? "INVENTARIO" : rbtTransacciones.Checked ? "TRANSACCIONES"
+                                                : "OTROS/VARIOS";
                     consultaNegocio.InsertarDetalleFactura(detalleFactura);
                     listaDetalleFacturta.Add(detalleFactura);
 
