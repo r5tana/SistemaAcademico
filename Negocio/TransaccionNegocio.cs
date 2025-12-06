@@ -17,10 +17,10 @@ namespace Negocio
         }
 
 
-        public void ActualizarTrasaccionBanco(string idComprobante, string idEstudiante, string idConcepto, string idCategoria, int anio)
+        public void ActualizarTrasaccionBanco(string idComprobante, string idEstudiante, string idConcepto, string idCategoria, int anio, out long idTransaccion)
         {
             TransaccionDatos transaccionDatos = new TransaccionDatos();
-            transaccionDatos.ActualizarTrasaccionBanco(idComprobante, idEstudiante, idConcepto, idCategoria, anio);
+            transaccionDatos.ActualizarTrasaccionBanco(idComprobante, idEstudiante, idConcepto, idCategoria, anio, out idTransaccion);
         }
 
         public List<tmetransacciones> ListaTransaccionesPorEstudiante(string codigoEstudiante)

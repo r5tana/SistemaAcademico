@@ -93,11 +93,18 @@
                     </a>
                 </li>
 
-                
+
                 <li class="nav-item active">
                     <a class="nav-link" href="WebFormInputFile.aspx">
                         <i class="fas fa-fw fa-file"></i>
                         <span>Subir Comprobante</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="WebFormReports.aspx">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Consulta Recibos</span>
                     </a>
                 </li>
 
@@ -191,7 +198,7 @@
 
         <!-- Orden js-->
         <script src="Scripts/jquery-3.3.1.js"></script>
-        <script src="Scripts/bootstrap.bundle.min.js"></script>      
+        <script src="Scripts/bootstrap.bundle.min.js"></script>
         <%--<script src="Scripts/bootstrap.min.js"></script> prueba glg--%>
         <script src="Scripts/jquery.dataTables.min.js"></script>
         <script src="Scripts/dataTables.buttons.min.js"></script>

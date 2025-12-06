@@ -37,18 +37,22 @@ namespace Datos
 
         }
 
-        public void ActualizarTrasaccionBanco(string idComprobante ,string idEstudiante, string idConcepto, string idCategoria, int anio)
+        public void ActualizarTrasaccionBanco(string idComprobante, string idEstudiante, string idConcepto, string idCategoria, int anio, out long idTransaccion)
         {
             try
             {
+                idTransaccion = 0;
                 modeloFacturacion = new SistemaFacturacionEntities();
                 transacciones = new tmetransacciones();
 
-                transacciones = (from x in modeloFacturacion.tmetransacciones where x.id_estudiante == idEstudiante & x.id_concepto.TrimEnd() == idConcepto
-                                    & x.id_categoria == idCategoria & x.annio_lectivo == anio select x).FirstOrDefault();
+                transacciones = (from x in modeloFacturacion.tmetransacciones
+                                 where x.id_estudiante == idEstudiante & x.id_concepto.TrimEnd() == idConcepto
+                                    & x.id_categoria == idCategoria & x.annio_lectivo == anio
+                                 select x).FirstOrDefault();
 
                 if (transacciones != null)
                 {
+                    idTransaccion = transacciones.idtrans;
                     transacciones.estadopor = "BANPRO";
                     transacciones.estado = "1";
                     transacciones.id_factura_banco = idComprobante;
@@ -94,10 +98,10 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 List<DetalleTransaccionEstudianteDto> listaTransacciones = new List<DetalleTransaccionEstudianteDto>();
                 modeloFacturacion.Database.CommandTimeout = 300;
-                
-                return listaTransacciones = (from x in modeloFacturacion.tmetransacciones 
-                                             where x.id_estudiante == codigoEstudiante 
-                                             & x.estado == "0" 
+
+                return listaTransacciones = (from x in modeloFacturacion.tmetransacciones
+                                             where x.id_estudiante == codigoEstudiante
+                                             & x.estado == "0"
                                              select new DetalleTransaccionEstudianteDto
                                              {
                                                  IdTransaccion = x.idtrans,
@@ -142,6 +146,27 @@ namespace Datos
             {
 
                 throw new Exception("Error al actualizar transacción " + error);
+            }
+        }
+
+        public tmetransacciones ConsultarTransaccion(string idComprobante, string idEstudiante, string idConcepto, string idCategoria, int anio)
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                transacciones = new tmetransacciones();
+
+                modeloFacturacion.Database.CommandTimeout = 300;
+                return transacciones = (from x in modeloFacturacion.tmetransacciones
+                                        where x.id_estudiante == idEstudiante & x.id_concepto.TrimEnd() == idConcepto
+                                           & x.id_categoria == idCategoria & x.annio_lectivo == anio
+                                        select x).FirstOrDefault();
+
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception("Error al actualizar transacción por estudiante " + error);
             }
         }
 

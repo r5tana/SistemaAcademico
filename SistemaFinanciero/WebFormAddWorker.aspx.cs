@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -149,6 +150,10 @@ namespace SistemaFinanciero
 
                 usuarioNegocio.ActualizarUsuario(usuarioModificado);
 
+
+                bool validaSerie = false;
+                bool actualizaSerie = false;
+
                 //Se le cambio el cargo
                 if (usuarioEntidad.cargo.ToUpper().TrimEnd() != usuarioModificado.cargo.ToUpper().TrimEnd())
                 {
@@ -162,6 +167,7 @@ namespace SistemaFinanciero
 
                         if (existeCaja != null)
                         {
+                            validaSerie = true;
                             consultaNegocio.ActivarInactivarCaja(usuarioEntidad.id_usuario, 1); // Activar
                         }
                         else
@@ -171,33 +177,37 @@ namespace SistemaFinanciero
                 else
                 {
                     if (usuarioModificado.cargo.ToUpper().TrimEnd() == "CAJERO")
-                    {
-                        bool actualizaSerie = false;
-                        string serie = Convert.ToString(ddlSerie.SelectedItem);
-                        var cajaUsuario = consultaNegocio.ConsultarCajaUsuario(usuarioEntidad.id_usuario);
-
-                        actualizaSerie = int.Parse(ddlSerie.SelectedValue) != 0
-                                                ? cajaUsuario.Serie != null
-                                                        ? cajaUsuario.Serie != serie
-                                                                ? true
-                                                        : false
-                                                : true
-                                        : false;
-
-
-
-                        if (actualizaSerie)
-                            consultaNegocio.ActualizarSerieCaja(usuarioEntidad.id_usuario, serie);
-
-                    }
+                        validaSerie = true;
 
                 }
+
+                if (validaSerie)
+                {
+                    string serie = Convert.ToString(ddlSerie.SelectedItem);
+                    var cajaUsuario = consultaNegocio.ConsultarCajaUsuario(usuarioEntidad.id_usuario);
+
+                    //Validaciones: 1. Se seleccino serie, 2. El usuario tiene serie registrada, 3. Se le hizo camio de serie
+                    actualizaSerie = int.Parse(ddlSerie.SelectedValue) != 0
+                                            ? cajaUsuario.Serie != null
+                                                    ? cajaUsuario.Serie != serie
+                                                            ? true
+                                                    : false
+                                            : true
+                                    : false;
+
+
+
+                    if (actualizaSerie)
+                        consultaNegocio.ActualizarSerieCaja(usuarioEntidad.id_usuario, serie);
+
+                }
+
 
                 LimpiarCampos();
                 btnAgregar.Visible = true;
                 pnlDatos.Visible = false;
 
-                alert = @"swal('Aviso!', 'Se actualizo el registro correctamente.', 'success');";
+                alert = @"swal('Aviso!', 'Se actualizó el registro correctamente.', 'success');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
 
 

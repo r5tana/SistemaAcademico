@@ -237,7 +237,11 @@
                         <asp:BoundField DataField="nombres" HeaderText="Nombres" SortExpression="nombres" />
                         <asp:BoundField DataField="apellidos" HeaderText="Apellidos" SortExpression="apellidos" />
                         <asp:BoundField DataField="estado" HeaderText="Estado" SortExpression="estado" />
-                        <asp:BoundField DataField="seccion" HeaderText="Sección" SortExpression="seccion" />
+                        <asp:TemplateField HeaderText="Grado/Sección">
+                            <ItemTemplate>
+                                <%# Eval("nivel") + "-" + Eval("seccion") %>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
                     <EditRowStyle BorderStyle="None" />
                     <EmptyDataRowStyle BorderStyle="None" />

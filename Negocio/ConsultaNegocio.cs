@@ -101,6 +101,24 @@ namespace Negocio
             datosConsulta.ActualizarSerieCaja(idUsuario, serie);
         }
 
+        public List<tmefacturas> ListarFacturaPorId(string idFactura)
+        {
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            return datosConsulta.ListarFacturaPorId(idFactura);
+        }
+
+        public List<tmefacturas> ListarFacturaPorFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            return datosConsulta.ListarFacturaPorFecha(fechaInicio, fechaFin);
+        }
+
+        public void InsertarDetalleFacturaLista(List<tmefacturasdet> facturasDetalle)
+        {
+
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            datosConsulta.InsertarDetalleFacturaLista(facturasDetalle);
+        }
     }
 
 }

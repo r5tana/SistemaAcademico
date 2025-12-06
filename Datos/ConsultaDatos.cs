@@ -139,7 +139,7 @@ namespace Datos
             catch (Exception err)
             {
 
-                throw new Exception("Error al consultar contrado " + nombreTabla + " " + err);
+                throw new Exception("Error al consultar contador " + nombreTabla + " " + err);
             }
             finally
             {
@@ -210,6 +210,7 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 var factura = new List<tmefacturasdet>();
 
+                modeloFacturacion.Database.CommandTimeout = 300;
                 return factura = (from x in modeloFacturacion.tmefacturasdet where x.id_factura == idFactura select x).ToList();
             }
             catch (Exception err)
@@ -304,7 +305,10 @@ namespace Datos
                     if (tipo == 1) //Activar
                         caja.estado = "ACTIVO";
                     else
+                    {
+                        caja.Serie = null;
                         caja.estado = "INACTIVO";
+                    }
 
                     modeloFacturacion.SaveChanges();
                 }
@@ -343,6 +347,73 @@ namespace Datos
                 if (modeloFacturacion != null)
                     modeloFacturacion.Dispose();
             }
+        }
+
+        public List<tmefacturas> ListarFacturaPorId(string idFactura)
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                List<tmefacturas> listaFactura = new List<tmefacturas>();
+
+                return listaFactura = (from x in modeloFacturacion.tmefacturas where x.id_factura == idFactura  select x).ToList();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al listar número de recibo " + idFactura + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public List<tmefacturas> ListarFacturaPorFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                List<tmefacturas> listaFactura = new List<tmefacturas>();
+
+                modeloFacturacion.Database.CommandTimeout = 300;
+                return listaFactura = (from x in modeloFacturacion.tmefacturas where x.fecha >= fechaInicio & x.fecha <= fechaFin select x).ToList();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al listar facturas por rango de fecha" + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
+        public void InsertarDetalleFacturaLista(List<tmefacturasdet> facturasDetalle)
+        {
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                modeloFacturacion.Database.CommandTimeout = 300;
+                modeloFacturacion.tmefacturasdet.AddRange(facturasDetalle);
+                modeloFacturacion.SaveChanges();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al guardar lista detalle factura " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+
         }
     }
 }
