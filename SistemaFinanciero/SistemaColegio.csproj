@@ -299,6 +299,7 @@
     <Content Include="Scripts\dataTables.buttons.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Soporte\HtmlPage1.html" />
     <Content Include="WebFormAddWorker.aspx" />
     <Content Include="WebFormChangePassword.aspx" />
     <Content Include="WebFormErrorGeneral.aspx" />
@@ -543,7 +544,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Soporte\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />
