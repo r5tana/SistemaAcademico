@@ -26,6 +26,8 @@ namespace SistemaFinanciero
         EstudianteNegocio negocioEstudiante = new EstudianteNegocio();
         ConsultaNegocio consultaNegocio = new ConsultaNegocio();
         TransaccionNegocio transaccionNegocio = new TransaccionNegocio();
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        Utilitario utilitario = new Utilitario();
 
         string alert = string.Empty;
         int idUsuario = 0;
@@ -680,7 +682,7 @@ namespace SistemaFinanciero
 
         public void GenerarPDF(tmefacturas factura, List<tmefacturasdet> listaDetalle)
         {
-            string rutaPdf = CrearEstructuraDocumento3(factura, listaDetalle);
+            string rutaPdf = CrearEstructuraDocumento(factura, listaDetalle);
 
             string script = $@"
                     swal({{
@@ -697,297 +699,26 @@ namespace SistemaFinanciero
 
         }
 
+
         private string CrearEstructuraDocumento(tmefacturas factura, List<tmefacturasdet> listaDetalle)
         {
-            string nombrePdf = "Recibo_" + factura.id_factura + ".pdf";
-            string carpeta = Server.MapPath("~/Soporte/");
 
-            // Si no existe la carpeta, crearla
-            if (!Directory.Exists(carpeta))
-                Directory.CreateDirectory(carpeta);
+            List<DetalleEstudianteDto> listaEstudiante = (List<DetalleEstudianteDto>)Session["listaEstudiantesFactura"];
 
-            // Ruta física donde se guardará
-            string rutaFisica = Server.MapPath("~/Soporte/" + nombrePdf);
+            var detalleAlumno = (factura.id_estudiante != null || !string.IsNullOrEmpty(factura.id_estudiante))
+                                    ? listaEstudiante.Where(x => x.CodigoEstudiante == factura.id_estudiante).FirstOrDefault()
+                                : null;
 
-            using (FileStream fs = new FileStream(rutaFisica, FileMode.Create))
-            {
-                Document document1 = new Document(PageSize.A4);
-                PdfWriter writer1 = PdfWriter.GetInstance(document1, fs);
+            var nombreCajero = (factura.estado_por != null || !string.IsNullOrEmpty(factura.estado_por))
+                                    ? usuarioNegocio.NombreUsuario(factura.estado_por)
+                                : null;
 
-                //float anchoRecibo = 226.77f;
-                //float altoRecibo = 566.93f;
-                //Rectangle tamanioPersonalizado = new Rectangle(anchoRecibo, altoRecibo);
-                //Document document2 = new Document(tamanioPersonalizado);
+            string Grado = detalleAlumno != null ? detalleAlumno.Grado : "";
+            string Seccion = detalleAlumno != null ? detalleAlumno.Seccion : "";
+            string cajeroNombre = !string.IsNullOrEmpty(nombreCajero) ? nombreCajero : "";
+            string valorEnLetras = Utilitario.ConvertirMontoALetras(Convert.ToDecimal(factura.total_cordobas));
 
-                Document document = new Document(new Rectangle(595.28f, 420.95f), 5f, 5f, 5f, 5f);
-
-                PdfWriter writer = PdfWriter.GetInstance(document, fs);
-                // Para hacer crecer la hoja
-
-                if (listaDetalle.Count > 4)
-                    document.SetPageSize(new Rectangle(226.77f, document.BottomMargin + writer.GetVerticalPosition(false)));
-
-
-                document.Open();
-
-                // Título
-                Font fontTitle = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10);
-                Font font9 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10);
-
-                Paragraph Titulo1 = new Paragraph("ASOCIACIÓN EDUCATIVA LA SALLISTA", new Font(Font.FontFamily.TIMES_ROMAN, 12));
-                Titulo1.Alignment = Element.ALIGN_CENTER;
-                document.Add(Titulo1);
-
-                Paragraph Titulo2 = new Paragraph("Instituto Pedagógico La Salle", new Font(Font.FontFamily.TIMES_ROMAN, 12));
-                Titulo2.Alignment = Element.ALIGN_CENTER;
-                document.Add(Titulo2);
-
-                Paragraph Titulo8 = new Paragraph("Dirección: De los semáforos de Claro Villa Fontana, 150 metros al Oeste.", new Font(Font.FontFamily.TIMES_ROMAN, 11));
-                Titulo8.Alignment = Element.ALIGN_CENTER;
-                document.Add(Titulo8);
-
-                Paragraph Titulo13 = new Paragraph("Teléfono: 2278 0165    Ruc: J0810000067913", new Font(Font.FontFamily.TIMES_ROMAN, 11));
-                Titulo13.Alignment = Element.ALIGN_CENTER;
-                document.Add(Titulo13);
-
-                Paragraph Titulo9 = new Paragraph("RECIBO OFICIAL DE CAJA", new Font(Font.FontFamily.TIMES_ROMAN, 11));
-                Titulo9.Alignment = Element.ALIGN_CENTER;
-                document.Add(Titulo9);
-
-                // 1. Obtener la parte numérica (todos los caracteres que sean dígitos)
-                string correlativo = new string(factura.id_factura.ToString().TakeWhile(char.IsDigit).ToArray());
-
-                // 2. Obtener la parte de la letra (todos los caracteres que NO sean dígitos)
-                string serie = new string(factura.id_factura.ToString().SkipWhile(char.IsDigit).ToArray());
-
-                Paragraph Titulo3 = new Paragraph("Fecha : " + factura.fecha?.ToString("dd/MM/yyyy") + "                     Serie " + serie + "    " + "N°. " + correlativo, new Font(Font.FontFamily.TIMES_ROMAN, 10));
-                Titulo3.Alignment = Element.ALIGN_CENTER;
-                document.Add(Titulo3);
-
-                document.Add(new Chunk("\n"));
-
-                string Grado = "5";
-                string Seccion = "A";
-
-                Paragraph Titulo4 = new Paragraph("Recibimos de : " + factura.anombrede.ToString() + "Grado " + Grado + "Sección " + Seccion, new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo4.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo4);
-
-                decimal MontoTotal = Convert.ToDecimal(factura.total_cordobas);
-                Paragraph Titulo10 = new Paragraph("La cantidad de  : " + MontoTotal, new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo10.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo10);
-
-                string valorEnLetras = MontoALetras.ConvertirMontoACordobas(MontoTotal);
-                Paragraph Titulo11 = new Paragraph("Valor en letras  : " + valorEnLetras, new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo11.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo11);
-
-                List<string> Transacciones = new List<string>();
-                foreach (var item in listaDetalle)
-                {
-                    Transacciones.Add(item.nombre_item + " - " + item.subtotal);
-                }
-
-                Paragraph Titulo12 = new Paragraph("En concepto de  : " + string.Join(", ", Transacciones), new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo12.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo12);
-
-
-                Paragraph Titulo6 = new Paragraph("Pagó en : " + factura.forma_pago, new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo6.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo6);
-
-
-                Paragraph Titulo7 = new Paragraph("____________________", new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo7.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo7);
-
-                Paragraph Titulo14 = new Paragraph("   Cajer@ ", new Font(Font.FontFamily.TIMES_ROMAN, 9));
-                Titulo14.Alignment = Element.ALIGN_LEFT;
-                document.Add(Titulo14);
-
-                document.Add(new Chunk("\n"));
-
-                document.Close();
-                writer.Close();
-            }
-
-            // Retornar la ruta virtual para abrir en el navegador
-            return "/Soporte/" + nombrePdf;
-        }
-
-        private string CrearEstructuraDocumento2(tmefacturas factura, List<tmefacturasdet> listaDetalle)
-        {
-
-            string Grado = "5";
-            string Seccion = "B";
-            string nombrePdf = "Recibo_" + factura.id_factura + ".pdf";
-            string carpeta = Server.MapPath("~/Soporte/");
-
-            // Si no existe la carpeta, crearla
-            if (!Directory.Exists(carpeta))
-                Directory.CreateDirectory(carpeta);
-
-            // Ruta física donde se guardará
-            string rutaFisica = Server.MapPath("~/Soporte/" + nombrePdf);
-
-            // Definición de fuentes
-            Font fontHeader = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, Font.BOLD);
-            Font fontTitle = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD);
-            Font fontNormal = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10);
-            Font fontNegrita = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, Font.BOLD);
-            Font fontSmall = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9);
-            Font fontSmallNegrita = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, Font.BOLD);
-
-            // --- CORRECCIÓN CLAVE: Usar la misma instancia de Document y Writer ---
-            // Había dos inicializaciones de Document/Writer que podían causar problemas (document1/writer1 vs document/writer)
-
-            // Tamaño: Ancho A4, Medio Alto A4 (595.28f, 420.95f) con márgenes reducidos
-            Rectangle tamanioDocumento = new Rectangle(595.28f, 420.95f);
-            Document document = new Document(tamanioDocumento, 15f, 15f, 15f, 15f);
-
-            using (FileStream fs = new FileStream(rutaFisica, FileMode.Create))
-            {
-                PdfWriter writer = PdfWriter.GetInstance(document, fs);
-                document.Open();
-
-                try
-                {
-                    // --- BLOQUE 1: ENCABEZADO DE LA INSTITUCIÓN ---
-                    Paragraph Titulo1 = new Paragraph("ASOCIACIÓN EDUCATIVA LA SALLISTA", fontHeader);
-                    Titulo1.Alignment = Element.ALIGN_CENTER;
-                    document.Add(Titulo1);
-
-                    Paragraph Titulo2 = new Paragraph("Instituto Pedagógico La Salle", fontHeader);
-                    Titulo2.Alignment = Element.ALIGN_CENTER;
-                    document.Add(Titulo2);
-
-                    Paragraph Titulo8 = new Paragraph("Dirección: De los semáforos de Claro Villa Fontana, 150 metros al Oeste.", fontNormal);
-                    Titulo8.Alignment = Element.ALIGN_CENTER;
-                    document.Add(Titulo8);
-
-                    Paragraph Titulo13 = new Paragraph("Teléfono: 2278 0165     Ruc: J0810000067913", fontNormal);
-                    Titulo13.Alignment = Element.ALIGN_CENTER;
-                    document.Add(Titulo13);
-
-                    document.Add(new Chunk("\n"));
-
-                    Paragraph Titulo9 = new Paragraph("RECIBO OFICIAL DE CAJA", fontTitle);
-                    Titulo9.Alignment = Element.ALIGN_CENTER;
-                    document.Add(Titulo9);
-
-                    // --- BLOQUE 2: FECHA Y NÚMERO DE RECIBO (USANDO TABLA PARA ALINEACIÓN) ---
-
-                    // 1. Obtener Serie y Correlativo
-                    string idFacturaStr = factura.id_factura.ToString();
-                    string correlativo = new string(idFacturaStr.TakeWhile(char.IsDigit).ToArray());
-                    string serie = new string(idFacturaStr.SkipWhile(char.IsDigit).ToArray());
-
-                    PdfPTable tableHeaderInfo = new PdfPTable(2);
-                    tableHeaderInfo.WidthPercentage = 100;
-                    tableHeaderInfo.SetWidths(new float[] { 1f, 1f });
-
-                    // Celda Izquierda: Fecha
-                    tableHeaderInfo.AddCell(new PdfPCell(new Phrase("Fecha : " + factura.fecha?.ToString("dd/MM/yyyy"), fontNormal)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
-
-                    // Celda Derecha: Serie y Número
-                    tableHeaderInfo.AddCell(new PdfPCell(new Phrase("Serie " + serie + "    N°. " + correlativo, fontNegrita)) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
-
-                    document.Add(tableHeaderInfo);
-                    document.Add(new Chunk("\n")); // Espacio
-
-                    // --- BLOQUE 3: DETALLES DE LA TRANSACCIÓN (USANDO TABLA PRINCIPAL) ---
-
-                    // Tabla para los detalles (Recibimos de, Cantidad, Concepto, etc.)
-                    PdfPTable tableDetalle = new PdfPTable(3);
-                    tableDetalle.WidthPercentage = 100;
-                    // Anchos: Etiqueta (20%), Valor (60%), Info Adicional (20%)
-                    tableDetalle.SetWidths(new float[] { 2f, 6f, 2f });
-
-                    // Fila 1: Recibimos de / Grado / Sección
-                    tableDetalle.AddCell(new PdfPCell(new Phrase("Recibimos de :", fontSmall)) { Border = Rectangle.NO_BORDER });
-                    tableDetalle.AddCell(new PdfPCell(new Phrase(factura.anombrede.ToString(), fontSmallNegrita)) { Border = Rectangle.BOTTOM_BORDER });
-                    tableDetalle.AddCell(new PdfPCell(new Phrase($"Grado {Grado} Sección {Seccion}", fontSmall)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-
-                    // Fila 2: La cantidad de (Numérico, se deja en una sola celda para que se vea como una línea)
-                    decimal MontoTotal = Convert.ToDecimal(factura.total_cordobas);
-                    tableDetalle.AddCell(new PdfPCell(new Phrase("La cantidad de :", fontSmall)) { Border = Rectangle.NO_BORDER });
-                    tableDetalle.AddCell(new PdfPCell(new Phrase(MontoTotal.ToString("N2"), fontSmallNegrita)) { Colspan = 2, Border = Rectangle.BOTTOM_BORDER });
-
-                    // Fila 3: Valor en letras
-                    string valorEnLetras = MontoALetras.ConvertirMontoACordobas(MontoTotal);
-                    tableDetalle.AddCell(new PdfPCell(new Phrase("Valor en letras :", fontSmall)) { Border = Rectangle.NO_BORDER });
-                    tableDetalle.AddCell(new PdfPCell(new Phrase(valorEnLetras, fontSmallNegrita)) { Colspan = 2, Border = Rectangle.BOTTOM_BORDER });
-
-                    // Fila 4: En concepto de
-                    List<string> Transacciones = new List<string>();
-                    foreach (var item in listaDetalle)
-                    {
-                        Transacciones.Add($"{item.nombre_item} - {item.subtotal:N2}");
-                    }
-                    string conceptoStr = string.Join(", ", Transacciones);
-                    tableDetalle.AddCell(new PdfPCell(new Phrase("En concepto de :", fontSmall)) { Border = Rectangle.NO_BORDER });
-                    tableDetalle.AddCell(new PdfPCell(new Phrase(conceptoStr, fontSmallNegrita)) { Colspan = 2, Border = Rectangle.BOTTOM_BORDER });
-
-                    document.Add(tableDetalle);
-                    document.Add(new Chunk("\n")); // Espacio
-
-                    // --- BLOQUE 4: PAGO Y CAJERO (USANDO TABLA) ---
-
-                    PdfPTable tablePagoCajero = new PdfPTable(2);
-                    tablePagoCajero.WidthPercentage = 100;
-                    tablePagoCajero.SetWidths(new float[] { 1.5f, 1f });
-
-                    // Celda Izquierda: Forma de Pago
-                    tablePagoCajero.AddCell(new PdfPCell(new Phrase("Pagó en : " + factura.forma_pago, fontSmall)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
-
-                    // Celda Derecha: Firma y Cajero
-                    PdfPCell cajeroCell = new PdfPCell();
-                    cajeroCell.Border = 0;
-                    cajeroCell.AddElement(new Paragraph("____________________", fontSmall));
-                    cajeroCell.AddElement(new Paragraph("      Cajer@", fontSmall));
-                    cajeroCell.HorizontalAlignment = Element.ALIGN_RIGHT;
-
-                    tablePagoCajero.AddCell(cajeroCell);
-
-                    document.Add(tablePagoCajero);
-
-                    document.Close();
-                    writer.Close();
-
-                    // Nota sobre el ajuste dinámico:
-                    // La lógica para ajustar el tamaño del documento si hay muchos detalles:
-                    // if (listaDetalle.Count > 4)
-                    //    document.SetPageSize(new Rectangle(226.77f, document.BottomMargin + writer.GetVerticalPosition(false)));
-                    // Se debe ejecutar *antes* de abrir el documento y es compleja de manejar dinámicamente.
-                    // Es mejor si el tamaño del recibo es fijo, o si se usa ColumnText para ajustar dinámicamente.
-
-                }
-                catch (Exception ex)
-                {
-                    // Manejo de errores
-                    // Puedes registrar el error aquí
-                    return "ERROR";
-                }
-                finally
-                {
-                    if (document.IsOpen())
-                    {
-                        document.Close();
-                    }
-                }
-
-                return "/Soporte/" + nombrePdf;
-            }
-        }
-
-        private string CrearEstructuraDocumento3(tmefacturas factura, List<tmefacturasdet> listaDetalle)
-        {
-            string Grado = "5";
-            string Seccion = "A";
-            string logoPath = Server.MapPath("~/Fotos/Fondo.jpg"); ;
-           string cajeroNombre = "Juan";
+            string logoPath = Server.MapPath("~/Fotos/LaSalle.jpeg"); 
 
             string nombrePdf = "Recibo_" + factura.id_factura + ".pdf";
             string carpeta = Server.MapPath("~/Soporte/");
@@ -1137,7 +868,7 @@ namespace SistemaFinanciero
 
                     decimal MontoTotal = Convert.ToDecimal(factura.total_cordobas);
                     // Si tienes MontoALetras:
-                    string valorEnLetras = "MIL DOSCIENTOS CINCUENTA CON 75/100 CÓRDOBAS"; // Ejemplo, usar tu método
+                    //string valorEnLetras = "MIL DOSCIENTOS CINCUENTA CON 75/100 CÓRDOBAS"; // Ejemplo, usar tu método
 
                     // La cantidad de: (Monto Numérico)
                     tableMonto.AddCell(new PdfPCell(new Phrase("La cantidad de:", fontNormal)) { Border = 0 });
@@ -1179,13 +910,29 @@ namespace SistemaFinanciero
                     // ======================================================
 
                     // Simular el checkbox no seleccionado con un carácter unicode o ASCII '☐'
-                    string check = "☐";
+                    //string check = "☐";
 
+                    //Paragraph pago = new Paragraph();
+                    //pago.Add(new Chunk("Pagó en: ", fontNormal));
+                    //pago.Add(new Chunk($"Efectivo {check}  ", fontNormal));
+                    //pago.Add(new Chunk($"Tarjeta {check}  ", fontNormal));
+                    //pago.Add(new Chunk($"Cheque {check}", fontNormal));
+
+
+                    // Normalizar el texto del tipo de pago
+                    string tipoPago = factura.forma_pago != null ? factura.forma_pago.Trim().ToUpper() : "";
+
+                    // Marcar solo el correcto
+                    string chkEfectivo = tipoPago == "EFECTIVO" ? "X" : "  ";
+                    string chkTarjeta = tipoPago == "TARJETA" ? "X" : "  ";
+                    string chkCheque = tipoPago == "CHEQUE" ? "X" : "  ";
+
+                    // Texto con cuadros
                     Paragraph pago = new Paragraph();
-                    pago.Add(new Chunk("Pagó en: ", fontNormal));
-                    pago.Add(new Chunk($"Efectivo {check}  ", fontNormal));
-                    pago.Add(new Chunk($"Tarjeta {check}  ", fontNormal));
-                    pago.Add(new Chunk($"Cheque {check}", fontNormal));
+                    pago.Add(new Chunk("Pagó en:  ", fontNormal));
+                    pago.Add(new Chunk($"[{chkEfectivo}] Efectivo   ", fontNormal));
+                    pago.Add(new Chunk($"[{chkTarjeta}] Tarjeta   ", fontNormal));
+                    pago.Add(new Chunk($"[{chkCheque}] Cheque", fontNormal));
 
                     // Simular chequeo basado en el campo forma_pago de tu objeto factura
                     // if (factura.forma_pago.ToUpper().Contains("EFECTIVO"))
@@ -1227,29 +974,6 @@ namespace SistemaFinanciero
             }
 
             return "/Soporte/" + nombrePdf;
-        }
-        public DataTable ConvertirListaToDataTablePersonalizado(List<tmefacturasdet> detalle)
-        {
-            DataTable table = new DataTable();
-
-            table.Columns.Add("Item", typeof(string));
-            table.Columns.Add("Precio (C$)", typeof(decimal));
-            table.Columns.Add("Cantidad", typeof(int));
-            table.Columns.Add("Subtotal (C$)", typeof(decimal));
-
-
-            // Llenado de filas con los datos de tu lista
-            foreach (var item in detalle)
-            {
-                DataRow row = table.NewRow();
-                row["Item"] = item.nombre_item;
-                row["Precio (C$)"] = item.preciounitario;
-                row["Cantidad"] = item.cantidad;
-                row["Subtotal (C$)"] = item.subtotal;
-                table.Rows.Add(row);
-            }
-
-            return table;
         }
 
 
@@ -1305,5 +1029,6 @@ namespace SistemaFinanciero
             txtCantidad.Text = string.Empty;
 
         }
+
     }
 }

@@ -119,6 +119,7 @@ namespace Negocio
             ConsultaDatos datosConsulta = new ConsultaDatos();
             datosConsulta.InsertarDetalleFacturaLista(facturasDetalle);
         }
+
     }
 
 }

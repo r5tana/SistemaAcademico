@@ -357,7 +357,7 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 List<tmefacturas> listaFactura = new List<tmefacturas>();
 
-                return listaFactura = (from x in modeloFacturacion.tmefacturas where x.id_factura == idFactura  select x).ToList();
+                return listaFactura = (from x in modeloFacturacion.tmefacturas where x.id_factura == idFactura select x).ToList();
             }
             catch (Exception err)
             {
@@ -415,5 +415,6 @@ namespace Datos
             }
 
         }
+
     }
 }

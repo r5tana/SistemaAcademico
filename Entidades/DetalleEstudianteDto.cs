@@ -14,6 +14,7 @@ namespace Entidades
         public string Estado { get; set; }
         public string Seccion { get; set; }
         public int? Anio_Lectivo { get; set; }
+        public string Grado { get; set; }
 
     }
 }

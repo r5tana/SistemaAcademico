@@ -20,7 +20,8 @@ namespace Datos
                 modeloFacturacion = new SistemaFacturacionEntities();
                 List<tmaestudiante> listaEstudiante = new List<tmaestudiante>();
                 modeloFacturacion.Database.CommandTimeout = 300;
-                return listaEstudiante = (from x in modeloFacturacion.tmaestudiante where x.estado != "INACTIVO"  
+                return listaEstudiante = (from x in modeloFacturacion.tmaestudiante
+                                          where x.estado != "INACTIVO"
                                           select x).ToList();
 
             }
@@ -46,8 +47,8 @@ namespace Datos
                 modeloFacturacion.Database.CommandTimeout = 300;
 
                 return listaEstudiante = (from x in modeloFacturacion.tmaestudiante
-                                          //join z in modeloFacturacion.tmetransacciones on x.id_estudiante equals z.id_estudiante
-                                          where  x.estado != "INACTIVO"
+                                              //join z in modeloFacturacion.tmetransacciones on x.id_estudiante equals z.id_estudiante
+                                          where x.estado != "INACTIVO"
                                           select new DetalleEstudianteDto
                                           {
                                               CodigoEstudiante = x.id_estudiante,
@@ -55,7 +56,8 @@ namespace Datos
                                               Apellidos = x.apellidos,
                                               Estado = x.estado,
                                               Seccion = x.seccion,
-                                              Anio_Lectivo = x.annio_lectivo
+                                              Anio_Lectivo = x.annio_lectivo,
+                                              Grado = x.nivel
 
                                           }).Distinct().ToList();
 
@@ -79,6 +81,8 @@ namespace Datos
             {
                 modeloFacturacion = new SistemaFacturacionEntities();
                 estudiante = new tmaestudiante();
+
+                modeloFacturacion.Database.CommandTimeout = 300;
 
                 return estudiante = (from x in modeloFacturacion.tmaestudiante where x.id_estudiante.TrimEnd() == codigoEstudiante select x).FirstOrDefault();
             }

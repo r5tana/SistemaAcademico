@@ -270,6 +270,7 @@
     <Content Include="Fotos\Fondo.jpg" />
     <Content Include="Fotos\Fondo2.png" />
     <Content Include="Fotos\index.htm" />
+    <Content Include="Fotos\LaSalle.jpeg" />
     <Content Include="Fotos\minus.png" />
     <Content Include="Fotos\plus.png" />
     <Content Include="iconoventana.ico" />
