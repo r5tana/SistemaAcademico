@@ -276,7 +276,6 @@ namespace SistemaFinanciero
             string Grado = detalleAlumno != null ? detalleAlumno.nivel : "";
             string Seccion = detalleAlumno != null ? detalleAlumno.seccion : "";
             string cajeroNombre = !string.IsNullOrEmpty(nombreCajero) ? nombreCajero : "";
-            string valorEnLetras = Utilitario.ConvertirMontoALetras(Convert.ToDecimal(factura.total_cordobas)).ToUpper();
 
             string logoPath = Server.MapPath("~/Fotos/LaSalle.jpeg");
 
@@ -428,7 +427,7 @@ namespace SistemaFinanciero
 
                 decimal MontoTotal = Convert.ToDecimal(factura.total_cordobas);
                 // Si tienes MontoALetras:
-                //string valorEnLetras = "MIL DOSCIENTOS CINCUENTA CON 75/100 CÓRDOBAS"; // Ejemplo, usar tu método
+                string valorEnLetras = Utilitario.ConvertirMontoALetras(Convert.ToDecimal(factura.total_cordobas)).ToUpper();
 
                 // La cantidad de: (Monto Numérico)
                 tableMonto.AddCell(new PdfPCell(new Phrase("La cantidad de:", fontNormal)) { Border = 0 });
