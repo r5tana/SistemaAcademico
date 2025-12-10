@@ -198,16 +198,17 @@ namespace SistemaFinanciero
             })
             .ToList();
 
-            // Se tomará la serie A por defecto
-            var nombreTabla = "A";
-            var consecutivo = consultaNegocio.ConsultarContadorTabla(nombreTabla);
 
             foreach (var item in listaAgrupada)
             {
+                // Se tomará la serie A por defecto
+                var nombreTabla = "A";
+
                 // Consultar Consecutivo
-                var idFactura =  consecutivo.tabla_contador;
-                var idRecibo =  Convert.ToString(idFactura + "" + nombreTabla);
-                var idContador =  idFactura + 1;
+                var consecutivo = consultaNegocio.ConsultarContadorTabla(nombreTabla);
+                var idFactura = consecutivo.tabla_contador;
+                var idRecibo = Convert.ToString(idFactura + "" + nombreTabla);
+                var idContador = idFactura + 1;
 
                 // Obtener nombre estudiante
                 var estudiante = estudianteNegocio.ConsultarEstudiante(item.CodAlum.ToString());
