@@ -98,7 +98,7 @@
                         <label class="col-md-5 col-lg-4 control-label" name="dtFecha">Fecha: </label>
 
                         <div class="col-md-7 col-lg-8">
-                            <asp:TextBox ID="txtFecha" CssClass="form-control mayusculas" PlaceHolder="Fecha" type="date" ReadOnly="true" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="txtFecha" CssClass="form-control mayusculas" PlaceHolder="Fecha" type="date" runat="server"></asp:TextBox>
                             <asp:Label ID="lblsms" runat="server" Text="La fecha es boligatoria" ForeColor="Red" Visible="false"></asp:Label>
                         </div>
                     </div>
