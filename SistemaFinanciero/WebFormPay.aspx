@@ -198,7 +198,6 @@
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-control" Enabled="false">
                                     <asp:ListItem Value="CANCELADO">CANCELADO</asp:ListItem>
-                                    <asp:ListItem Value="ANULADO">ANULADO</asp:ListItem>
                                 </asp:DropDownList>
                             </div>
 
@@ -276,6 +275,7 @@
                             <div class="col-lg-2 col-md-2 col-xs-2">
                                 <asp:TextBox ID="txtCodEstudiante" CssClass="form-control mayusculas" runat="server" ReadOnly="true" Visible="false"></asp:TextBox>
                                 <asp:TextBox ID="txtIdCaja" CssClass="form-control mayusculas" runat="server" ReadOnly="true" Visible="false"></asp:TextBox>
+                                <asp:TextBox ID="txtSerie" CssClass="form-control mayusculas" runat="server" ReadOnly="true" Visible="false"></asp:TextBox>
 
                             </div>
 

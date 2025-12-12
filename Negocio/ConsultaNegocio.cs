@@ -120,6 +120,13 @@ namespace Negocio
             datosConsulta.InsertarDetalleFacturaLista(facturasDetalle);
         }
 
+        public tmecajas ConsultarSerieCaja(string idCaja)
+        {
+
+            ConsultaDatos datosConsulta = new ConsultaDatos();
+            return datosConsulta.ConsultarSerieCaja(idCaja);
+        }
+
     }
 
 }

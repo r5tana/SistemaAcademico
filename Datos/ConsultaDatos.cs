@@ -416,5 +416,27 @@ namespace Datos
 
         }
 
+        public tmecajas ConsultarSerieCaja(string idCaja)
+        {
+
+            try
+            {
+                modeloFacturacion = new SistemaFacturacionEntities();
+                caja = new tmecajas();
+
+                return caja = (from x in modeloFacturacion.tmecajas where x.id_caja == idCaja  select x).FirstOrDefault();
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception("Error al consultar serie " + idCaja + " " + err);
+            }
+            finally
+            {
+                if (modeloFacturacion != null)
+                    modeloFacturacion.Dispose();
+            }
+        }
+
     }
 }

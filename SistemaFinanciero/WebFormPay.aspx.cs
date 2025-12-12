@@ -68,18 +68,27 @@ namespace SistemaFinanciero
 
         public void CargarDatosUsuario(int idUsuario, string login)
         {
+            bool bloqueo = false;
+            txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
             var detalleCaja = consultaNegocio.ConsultarCajaUsuario(idUsuario);
             if (detalleCaja != null)
             {
-
-                Session["DatosCaja"] = detalleCaja;
-                txtIdCaja.Text = detalleCaja.id_caja;
-                txtCaja.Text = detalleCaja.nombre.TrimEnd();
-                txtTipoCambio.Text = detalleCaja.tipocambio.ToString();
-                txtUsuarioProcesa.Text = login;
-                txtFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                if (string.IsNullOrEmpty(detalleCaja.Serie))
+                    bloqueo = true;
+                else
+                {
+                    Session["DatosCaja"] = detalleCaja;
+                    txtIdCaja.Text = detalleCaja.id_caja;
+                    txtCaja.Text = detalleCaja.nombre.TrimEnd();
+                    txtTipoCambio.Text = detalleCaja.tipocambio.ToString();
+                    txtUsuarioProcesa.Text = login;
+                }
             }
             else
+                bloqueo = true;
+
+
+            if (bloqueo)
             {
                 txtNombreFactura.Enabled = false;
                 btnAbrirModalEstudiante.Enabled = false;
@@ -89,7 +98,10 @@ namespace SistemaFinanciero
                 rbtTransacciones.Enabled = false;
                 rbtOtros.Enabled = false;
 
-                alert = @"swal('Aviso!', 'No tiene caja activa para ingresar pagos', 'error');";
+                string mensaje = detalleCaja == null ? "No tiene caja activa para ingresar pagos." : "No tiene serie asignada para realizar pagos";
+
+
+                alert = @"swal('Aviso!', ' " + mensaje + "', 'error');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
         }
@@ -573,6 +585,8 @@ namespace SistemaFinanciero
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            var serieCaja = consultaNegocio.ConsultarSerieCaja(txtIdCaja.Text.ToString());
+
             if (string.IsNullOrEmpty(txtNombreFactura.Text))
             {
                 alert = @"swal('Aviso!', 'Digite o seleccione el nombre de la persona a facturar.', 'error');";
@@ -583,8 +597,15 @@ namespace SistemaFinanciero
                 alert = @"swal('Aviso!', 'Debe digitar el ingreso', 'error');";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
             }
+            else if (string.IsNullOrEmpty(serieCaja.Serie))
+            {
+
+                alert = @"swal('Aviso!', 'No puede realizar el pago porque no tiene una serie asignada.', 'error');";
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
+            }
             else
             {
+                txtSerie.Text = serieCaja.Serie;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModalConfirm();", true);
 
             }
@@ -595,89 +616,73 @@ namespace SistemaFinanciero
         protected void btnConfirmar_Click(object sender, EventArgs e)
         {
             List<tmefacturasdet> listaDetalleFacturta = new List<tmefacturasdet>();
-            if (!string.IsNullOrEmpty(txtIngreso.Text))
+            
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "closeModalConfirm(); RemoveBackDrop();", true);
+
+            var nombreTabla = txtSerie.Text.ToString();
+            var consecutivo = consultaNegocio.ConsultarContadorTabla(nombreTabla);
+            var idFactura =  consecutivo.tabla_contador;
+            var idRecibo = Convert.ToString(idFactura + "" + nombreTabla);
+            var idContador = idFactura + 1;
+
+            // Insertar en la tabla factura
+            tmefacturas factura = new tmefacturas();
+            factura.id_factura = idRecibo;
+            factura.tipo_factura = "MANUAL";
+            factura.id_caja = txtIdCaja.Text.ToString();
+            factura.fecha = Convert.ToDateTime(txtFecha.Text);
+            factura.tipo_cambio = Convert.ToDouble(txtTipoCambio.Text);
+            factura.id_estudiante = txtCodEstudiante.Text;
+            factura.anombrede = txtNombreFactura.Text.ToUpper().TrimEnd();
+            factura.total_cordobas = Convert.ToDouble(txtTotalCordoba.Text);
+            factura.total_dolares = Convert.ToDouble(txtTotalDolar.Text);
+            factura.cliente_paga = Convert.ToDouble(txtIngreso.Text);
+            factura.cliente_cambio = Convert.ToDouble(txtCambio.Text);
+            factura.fecha_cancela = Convert.ToDateTime(txtFecha.Text);
+            factura.estado = Convert.ToString(ddlEstado.SelectedItem);
+            factura.estado_por = txtUsuarioProcesa.Text;
+            factura.forma_pago = Convert.ToString(ddlFormaPago.SelectedItem);
+            factura.detalles = "";
+            consultaNegocio.InsertarFactura(factura);
+            consultaNegocio.ActualizarConsecutivoTabla(consecutivo.id_contador, (long)idContador);
+
+            tmefacturasdet detalleFactura = null;
+            foreach (GridViewRow rows in GridProductos.Rows)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "closeModalConfirm(); RemoveBackDrop();", true);
+                // insertar en detalle factura
+                detalleFactura = new tmefacturasdet();
+                detalleFactura.id_item = (!rbtOtros.Checked) ? rows.Cells[0].Text : "0";
+                detalleFactura.id_factura = factura.id_factura;
+                detalleFactura.nombre_item = rows.Cells[1].Text;
+                detalleFactura.preciounitario = Convert.ToDouble(rows.Cells[2].Text);
+                detalleFactura.cantidad = int.Parse(rows.Cells[3].Text);
+                detalleFactura.subtotal = Convert.ToDouble(rows.Cells[4].Text);
+                detalleFactura.tipo_item = rbtConcepto.Checked ? "CONCEPTO" : rbtProducto.Checked
+                                            ? "INVENTARIO" : rbtTransacciones.Checked ? "TRANSACCIONES"
+                                            : "OTROS/VARIOS";
+                consultaNegocio.InsertarDetalleFactura(detalleFactura);
+                listaDetalleFacturta.Add(detalleFactura);
 
-
-
-                var datosCaja = (tmecajas)Session["DatosCaja"];
-                // Si el cajero no tiene serie, se continua con el idFactura
-                var nombreTabla = datosCaja.Serie != null ? datosCaja.Serie.TrimEnd() : "tmefacturas";
-
-                var consecutivo = consultaNegocio.ConsultarContadorTabla(nombreTabla);
-                var idFactura = consecutivo.id_contador != 43 ? consecutivo.tabla_contador : consecutivo.tabla_contador + 1;
-                var idRecibo = consecutivo.id_contador != 43 ? Convert.ToString(idFactura + "" + nombreTabla) : Convert.ToString(idFactura);
-                var idContador = consecutivo.id_contador != 43 ? idFactura + 1 : idFactura;
-
-                // Insertar en la tabla factura
-                tmefacturas factura = new tmefacturas();
-                factura.id_factura = idRecibo;
-                factura.tipo_factura = "MANUAL";
-                factura.id_caja = txtIdCaja.Text.ToString();
-                factura.fecha = Convert.ToDateTime(txtFecha.Text);
-                factura.tipo_cambio = Convert.ToDouble(txtTipoCambio.Text);
-                factura.id_estudiante = txtCodEstudiante.Text;
-                factura.anombrede = txtNombreFactura.Text.ToUpper().TrimEnd();
-                factura.total_cordobas = Convert.ToDouble(txtTotalCordoba.Text);
-                factura.total_dolares = Convert.ToDouble(txtTotalDolar.Text);
-                factura.cliente_paga = Convert.ToDouble(txtIngreso.Text);
-                factura.cliente_cambio = Convert.ToDouble(txtCambio.Text);
-                factura.fecha_cancela = Convert.ToDateTime(txtFecha.Text);
-                factura.estado = Convert.ToString(ddlEstado.SelectedItem);
-                factura.estado_por = txtUsuarioProcesa.Text;
-                factura.forma_pago = Convert.ToString(ddlFormaPago.SelectedItem);
-                factura.detalles = "";
-                consultaNegocio.InsertarFactura(factura);
-                consultaNegocio.ActualizarConsecutivoTabla(consecutivo.id_contador, (long)idContador);
-
-                tmefacturasdet detalleFactura = null;
-                foreach (GridViewRow rows in GridProductos.Rows)
+                // Si es un producto actualizar el stock
+                if (rbtProducto.Checked)
                 {
-                    // insertar en detalle factura
-                    detalleFactura = new tmefacturasdet();
-                    detalleFactura.id_item = (!rbtOtros.Checked) ? rows.Cells[0].Text : "0";
-                    detalleFactura.id_factura = factura.id_factura;
-                    detalleFactura.nombre_item = rows.Cells[1].Text;
-                    detalleFactura.preciounitario = Convert.ToDouble(rows.Cells[2].Text);
-                    detalleFactura.cantidad = int.Parse(rows.Cells[3].Text);
-                    detalleFactura.subtotal = Convert.ToDouble(rows.Cells[4].Text);
-                    detalleFactura.tipo_item = rbtConcepto.Checked ? "CONCEPTO" : rbtProducto.Checked
-                                                ? "INVENTARIO" : rbtTransacciones.Checked ? "TRANSACCIONES"
-                                                : "OTROS/VARIOS";
-                    consultaNegocio.InsertarDetalleFactura(detalleFactura);
-                    listaDetalleFacturta.Add(detalleFactura);
-
-                    // Si es un producto actualizar el stock
-                    if (rbtProducto.Checked)
-                    {
-                        string idProducto = rows.Cells[0].Text;
-                        var stockNuevo = Convert.ToInt32(rows.Cells[5].Text) - Convert.ToInt32(rows.Cells[3].Text.ToString());
-                        consultaNegocio.ActualizarStock(idProducto, stockNuevo);
-                    }
-
-                    // Actualizar en la tabla transacciones
-                    if (rbtTransacciones.Checked)
-                    {
-                        int IdTransaccion = int.Parse(rows.Cells[0].Text);
-                        transaccionNegocio.ActualizarTrasaccionPorId(IdTransaccion);
-                    }
+                    string idProducto = rows.Cells[0].Text;
+                    var stockNuevo = Convert.ToInt32(rows.Cells[5].Text) - Convert.ToInt32(rows.Cells[3].Text.ToString());
+                    consultaNegocio.ActualizarStock(idProducto, stockNuevo);
                 }
 
-                LimpiarCampos();
-
-                GenerarPDF(factura, listaDetalleFacturta);
-
-
+                // Actualizar en la tabla transacciones
+                if (rbtTransacciones.Checked)
+                {
+                    int IdTransaccion = int.Parse(rows.Cells[0].Text);
+                    transaccionNegocio.ActualizarTrasaccionPorId(IdTransaccion);
+                }
             }
-            else
-            {
-                GridProductos.UseAccessibleHeader = true;
-                GridProductos.HeaderRow.TableSection = TableRowSection.TableHeader;
 
-                alert = @"swal('Aviso!', 'Debe digitar el ingreso', 'error');";
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "Alerta", alert, true);
-            }
+            LimpiarCampos();
+
+            GenerarPDF(factura, listaDetalleFacturta);
+
         }
 
         public void GenerarPDF(tmefacturas factura, List<tmefacturasdet> listaDetalle)
@@ -717,7 +722,7 @@ namespace SistemaFinanciero
             string Seccion = detalleAlumno != null ? detalleAlumno.Seccion : "";
             string cajeroNombre = !string.IsNullOrEmpty(nombreCajero) ? nombreCajero : "";
 
-            string logoPath = Server.MapPath("~/Fotos/LaSalle.jpeg"); 
+            string logoPath = Server.MapPath("~/Fotos/LaSalle.jpeg");
 
             string nombrePdf = "Recibo_" + factura.id_factura + ".pdf";
             string carpeta = Server.MapPath("~/Soporte/");
@@ -987,6 +992,7 @@ namespace SistemaFinanciero
             txtIngreso.Text = string.Empty;
             txtCambio.Text = string.Empty;
             txtCodEstudiante.Text = string.Empty;
+            txtSerie.Text = string.Empty;
 
             rbtConcepto.Checked = false;
             rbtProducto.Checked = false;
